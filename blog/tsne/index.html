@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>TSNE approach to player clustering - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>TSNE approach to player clustering</h1>
+
+
+<p class="timestamp">November 18, 2016</p>
+
+<p>TSNE was in fact my first idea for this task, because I wanted to reduce the dimensility of dataset, in which majority of attributes must be somehow correlated with each other. The first time I saw example of TSNE usage was on r-bloggers.com in <a href="https://www.r-bloggers.com/pokemon-visualize-em-all/">pokemon visualition post</a>, written by Joshua Kunst.</p>
+<p>So I basically treated NBA players as they were Pokemon…</p>
+<p>Actually It enabled me to reduce number of dimensions from 25 to 2 and therefore visualize all players on one chart. With over 470 players I learnt quickly that I should start from dividing them by positions they play. I also found some patterns which I tried to follow in further analysis. So it was not just an art for art’s sake.</p>
+<div id="centers" class="section level3">
+<h3>Centers</h3>
+<p><img src="/blog/tsne_files/figure-html/cts-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="power-forwards" class="section level3">
+<h3>Power forwards</h3>
+<p><img src="/blog/tsne_files/figure-html/pts-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="forwards" class="section level3">
+<h3>Forwards</h3>
+<p><img src="/blog/tsne_files/figure-html/fts-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="wingmans" class="section level3">
+<h3>Wingmans</h3>
+<p><img src="/blog/tsne_files/figure-html/wts-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="guards" class="section level3">
+<h3>Guards</h3>
+<p><img src="/blog/tsne_files/figure-html/gts-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>All in all it is quite useful method to visualize close observations and outliers, on which I can build further analysis. Since TSNE does not create clusters in a basic sense, it is time to try out another tool (which happens to be GMM).</p>
+<p>Last but not least, it is quite funny how plots confirm some real-life facts:</p>
+<ul>
+<li>Centers: It is significant how far is DeMarcus Cousins from the rest of the field.</li>
+<li>Power Forwards: Draymond Green owns really a different skillset than the rest of the big wings.</li>
+<li>Forwards: Nothing to see here, sadly LeBron James is in the top-centre of the plot.</li>
+<li>Wingmans: Jimmy Butler and Kobe Bryant could not be farther away.</li>
+<li>Guards: Lets go somewhere else</li>
+</ul>
+</div>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

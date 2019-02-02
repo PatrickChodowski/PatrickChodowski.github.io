@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Clustering players by offensive style of play - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>Clustering players by offensive style of play</h1>
+
+
+<p class="timestamp">November 15, 2016</p>
+
+<p>My main goal of NBA analysis has always been and probably always will be trying to predict how any player would play against any team on any particular day of regular season. I am sure that building such a model would not be succesful without getting to know and then classyfing the players themselves before taking the next step. The main objective of this particular clustering is to find differences in style of play on the offensive end of the floor between NBA players.</p>
+<p>I also thought about trying to teach machine learning models without clustering the players. It could be possible since there is somehow fixed number of players during regular season, but teaching the models data for every single player against every particular team without grouping would easily lead to overfitting.</p>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p>My set of attributes consists of absolute number of shots from each area (Restricted Area, Paint, Mid Range, Long Range and Three Point Line), number of touches, assists, passes, rebounds and minutes per game. There is also a factor column with position each player plays on. Next group of attributes gathers information about playtypes - for example catch and shoot, pull-up, post up, spot up, cut and so on. All numeric variables were normalized.</p>
+<p>After many tries I realized that distinguishing players by their positions in the first step is crucial for preparing proper and effective model. So, there will be five of them:</p>
+<ul>
+<li>Centers (pretty obvious)</li>
+<li>Power Forwards (between forward and center, sometimes include smaller centers)</li>
+<li>Forwards (Lebron-likes)</li>
+<li>Wingmans (between guard and forward)</li>
+<li>Guards (both point guards and shooting guards)</li>
+</ul>
+</div>
+<div id="gmm-algorthm" class="section level3">
+<h3>GMM algorthm</h3>
+<p>Choosing an algorithm took me much more time I expected but at the end I think it was worth it. I started with hierarchical clustering because it worked for me before and I find it really effective method. But I noticed that for that many different observations hard-clustering is a risky method, so I switched to soft clusters. I also did not like the visualization of over 450 players in one dendrogram.</p>
+<p>I tried out DBSCAN and TSNE algorithms but did not come up with anything useful for that case. You can take a look at the results and descriptions by clicking on the respective tabs.</p>
+<p>Finally I came across Gaussian Mixture Models algorithm and after a bit of reasearching, a couple of chapters from different books and an inevitable youtube lecture I learned enough to apply it here with fair level of confidence.</p>
+<p>In short, <strong>Mclust()</strong> function from <strong>mclust</strong> package is testing all possible models on a dataset and then chooses the one with the smallest Bayesian Information Criteria. In the next step, the chosen one is applied on data.</p>
+<p><img src="/blog/offense_mclust_files/figure-html/biccplot-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre><code>## Best BIC values:
+##             EEE,6      VEV,2     EEE,5
+## BIC      4832.768 4788.28953 4692.1215
+## BIC diff    0.000  -44.47877 -140.6468</code></pre>
+<p>In soft clustering observations are not permanently assigned to any of clusters, but instead the algorithm calculates the likelihoods of belonging to each group for each of the observations. Player is then allocated to the group corresponding to the highest probability.</p>
+</div>
+<div id="the-goal" class="section level3">
+<h3>The goal</h3>
+<p>I do not want to focus only on shooting zones, but also on number of passes, rebounds, touches and minutes, because my objective is to determine the role of a player when he is on the court. That is why I put rarely playing players in different clusters - more often than not they have no impact on the final result.</p>
+</div>
+<div id="centers" class="section level3">
+<h3>Centers</h3>
+<p><img src="/blog/offense_mclust_files/figure-html/cplot-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>As you can see, there are 3 clusters - one with centers who can effectively score from high-post and even beyond the arc, second one with power centers who can dominate the paint and the last one with deep bench players, who play mostly during garbage time.</p>
+<p>After a chunk of not-so-pretty code I got final groups:</p>
+<p><img src="/blog/offense_mclust_files/figure-html/ctmap-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="power-forwards" class="section level3">
+<h3>Power forwards</h3>
+<p><img src="/blog/offense_mclust_files/figure-html/pplot-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Within powerforward position I found the most differing players. There are rebounding machines like Kenneth Faried or pure shooters like Ryan Anderson. It was quite easy to draw a line between those groups. There power forwards who can do almost everything on the floor, then mostly-shooters, then paint-animals and then deep reserves.</p>
+<p><img src="/blog/offense_mclust_files/figure-html/ptmap-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="forwards" class="section level3">
+<h3>Forwards</h3>
+<p><img src="/blog/offense_mclust_files/figure-html/fplot-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Forwards are pretty straightforward - there are overall point-forwards like LeBron, Melo and KD, then players who rely mostly on their outside shooting and then scorers who actually can’t rely on their shooting behind the arc, but are talented offensively in other ways.</p>
+<p><img src="/blog/offense_mclust_files/figure-html/ftmap-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="wings" class="section level3">
+<h3>Wings</h3>
+<p><img src="/blog/offense_mclust_files/figure-html/wplot-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Wingmans are floating between small forward and shooting guard position. They may have different athletic abilities, but there are a lot of simmilar attributes in their offence. Basically all of them are skilled offensive players, and the main difference is if they can score from any area of the floor or just belong to 3 point line.</p>
+<p><img src="/blog/offense_mclust_files/figure-html/wtmap-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="guards" class="section level3">
+<h3>Guards</h3>
+<p><img src="/blog/offense_mclust_files/figure-html/gplot-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>I had HUGE problem with guards because when you look into the data they look basically the same, but as you watch the game, everyone of them plays different. It took me a lot of time to pick up sufficient attributes for dividing guards into sensible groups. In fact it is the main reason I added playtypes data to the model.</p>
+<p><img src="/blog/offense_mclust_files/figure-html/gtmap-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>On the next page you can find a treemap with all the players in one chart.</p>
+</div>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

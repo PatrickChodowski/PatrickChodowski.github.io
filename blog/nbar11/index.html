@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>NBAr 1.1 update - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>NBAr 1.1 update</h1>
+
+
+<p class="timestamp">April 9, 2018</p>
+
+<p>Hola!</p>
+<p>Just wanted to let you all know that I recently updated NBAr with couple of new functions:</p>
+<ul>
+<li>getAllPlaytypes</li>
+<li>getAllTracking</li>
+<li>getHustleBoxscore</li>
+<li>getMatchups</li>
+</ul>
+<p>Interesting story with getAllPlaytypes and getAlltracking - I just recently started to using player tracking and playtypes data and realized they really need wrapping functions to download and combine all at once. Here they are - quite simple, quite good. Both create datasets with +120 columns but I made sure there are no duplicates or some dissapearing players.</p>
+<pre><code>at &lt;- getAllTracking(2017,&#39;Player&#39;)
+
+ap &lt;- getAllPlaytypes(2017,&#39;Player&#39;)</code></pre>
+<p>HustleBoxscore is basically hustle stats per game, which might be useful.</p>
+<pre><code>hb &lt;- getHustleBoxscore(gameID)</code></pre>
+<p>Matchups are really cool data to analyze and I am so happy that NBA decided to share it with people. Provide every single pair of players playing against each other during the game. Score, time etc. It’s awesome to analyze, great stuff to use in models.</p>
+<pre><code>matchup &lt;- getMatchups(gameID)</code></pre>
+<p>Also added small fixes to couple of existing functions. In next update I plan to add some ggplot based plotting functions for basketball-related plots (right now thinking mostly about shotchart, but I guess there are other possibilities as well)</p>
+<p>Thank you for reading and enjoy NBAr package!</p>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

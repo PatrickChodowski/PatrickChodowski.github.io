@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Blogs - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>Blogs</h1>
+
+
+
+
+  
+    <h2><a href="/blog/dbscan/">DBSCAN approach to finding outliers among players</a></h2>
+    <p class="timestamp">November 18, 2016</p>
+    <div class="content">
+    Although DBSCAN creates clusters on big and noticeably divided datasets I use it here mainly to find outliers among all players. That means it would distinguish all-stars players or those on the other side of NBA rankings. Luckily, it was the first one.
+library(factoextra)library(fpc)library(readr)library(dplyr)library(tidyr)library(tibble)players &lt;- read_rds(&quot;../../data/dbscan/players.RDS&quot;) %&gt;%remove_rownames() %&gt;% column_to_rownames(var = &#39;PLAYER_NAME&#39;)dbs &lt;- fpc::dbscan(players, eps = 4 ,MinPts = 200, scale= TRUE, method = &#39;raw&#39;)fviz_cluster(dbs, players, stand = FALSE, ellipse = FALSE, geom = &quot;text&quot;,labelsize = 5) +theme_bw() + theme(legend.
+    
+      ... <a href="/blog/dbscan/">Read more &hellip;</a>
+    
+    </div>
+    
+  
+    <h2><a href="/blog/tsne/">TSNE approach to player clustering</a></h2>
+    <p class="timestamp">November 18, 2016</p>
+    <div class="content">
+    TSNE was in fact my first idea for this task, because I wanted to reduce the dimensility of dataset, in which majority of attributes must be somehow correlated with each other. The first time I saw example of TSNE usage was on r-bloggers.com in pokemon visualition post, written by Joshua Kunst.
+So I basically treated NBA players as they were Pokemon…
+Actually It enabled me to reduce number of dimensions from 25 to 2 and therefore visualize all players on one chart.
+    
+      ... <a href="/blog/tsne/">Read more &hellip;</a>
+    
+    </div>
+    
+  
+    <h2><a href="/blog/treemap/">Treemap of all players</a></h2>
+    <p class="timestamp">November 17, 2016</p>
+    <div class="content">
+    Look at this beauty!
+Players in treemap
+
+    
+    </div>
+    
+  
+    <h2><a href="/blog/offense_mclust/">Clustering players by offensive style of play</a></h2>
+    <p class="timestamp">November 15, 2016</p>
+    <div class="content">
+    My main goal of NBA analysis has always been and probably always will be trying to predict how any player would play against any team on any particular day of regular season. I am sure that building such a model would not be succesful without getting to know and then classyfing the players themselves before taking the next step. The main objective of this particular clustering is to find differences in style of play on the offensive end of the floor between NBA players.
+    
+      ... <a href="/blog/offense_mclust/">Read more &hellip;</a>
+    
+    </div>
+    
+  
+    <h2><a href="/blog/team_def2/">Clustering teams by their defense p2</a></h2>
+    <p class="timestamp">November 14, 2016</p>
+    <div class="content">
+    This is the second part of my cluster analysis of NBA teams. In this paper I am looking for groups of teams based on their opponents percentages from certain areas on the court. I use slightly different methods than in previous analysis, not only just to try it out, but I found out that every method result in divergent clusters and in this case following algorithm suit me the best.
+    
+      ... <a href="/blog/team_def2/">Read more &hellip;</a>
+    
+    </div>
+    
+  
+    <h2><a href="/blog/team_def1/">Clustering teams by their defense p1</a></h2>
+    <p class="timestamp">November 7, 2016</p>
+    <div class="content">
+    In the first part I want to simply divide NBA teams by zones from which their opponents are shooting more frequent than from the others. These are not complex clusters that would provide me a little bit of insight if there is any difference between teams. My overall assumption is that better teams would allow less shots from “danger zones” which are Restricted Area and Three Point Line.
+There are of course only 30 observations, one for each team, and five variables describing frequency for each zone (Restrcited Area, Paint, Mid-Range, Long-Range, 3Point Line).
+    
+      ... <a href="/blog/team_def1/">Read more &hellip;</a>
+    
+    </div>
+    
+  
+  
+
+ <ul class="pagination">
+    
+    <li
+    >
+	<a href="/blog/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li
+    >
+    <a href="/blog/page/2/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    <li
+    ><a href="/blog/">1</a></li>
+    
+    <li
+    ><a href="/blog/page/2/">2</a></li>
+    
+    <li
+    class="active"><a href="/blog/page/3/">3</a></li>
+    
+    <li
+    ><a href="/blog/page/4/">4</a></li>
+    
+    <li
+    >
+    <a href="/blog/page/4/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li
+    >
+	<a href="/blog/page/4/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+
+
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

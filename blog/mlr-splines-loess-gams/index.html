@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>NBA Machine Learning #3 - Splines, LOESS and GAMs with mlr package - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>NBA Machine Learning #3 - Splines, LOESS and GAMs with mlr package</h1>
+
+
+<p class="timestamp">May 30, 2018</p>
+
+<div id="TOC">
+<ul>
+<li><a href="#about-series">About series</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#splines">Splines</a><ul>
+<li><a href="#linear-spline">Linear spline</a></li>
+<li><a href="#quadratic-spline">Quadratic spline</a></li>
+<li><a href="#cubic-spline">Cubic spline</a></li>
+<li><a href="#example">Example</a></li>
+</ul></li>
+<li><a href="#local-regression-loess">Local Regression (LOESS)</a></li>
+<li><a href="#generalized-additive-models-gams">Generalized Additive Models (GAMs)</a><ul>
+<li><a href="#training-gams">Training GAMs</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="about-series" class="section level2">
+<h2>About series</h2>
+<p>So I came up with an idea to write series of articles describing how to apply machine learning algorithms on some examples of NBA data. Got to say that plan is quite ambitious - I want to start with machine learning basics, go through some common data problems, required preprocessing tasks and obviously, algorithms. Starting with Linear Regression and hopefully finishing one day with Neural Networks or any other mysterious blackbox. Articles are going to cover both theory and practice (code) and data will be centered around NBA.</p>
+<p>Most of the tasks will be done with mlr package since I try to master it and I am looking for motivation. Datasets and scripts will be uploaded on my github, so feel free to use them for own practice!</p>
+<hr />
+<ul>
+<li><a href="/blog/mlr-model-building/">1. Process of building a model</a></li>
+<li><a href="/blog/mlr-linear-regression/">2. Linear Regression with mlr package</a></li>
+<li><a href="/blog/mlr-splines-loess-gams/">3. Splines, LOESS and GAMs with mlr package</a></li>
+</ul>
+<hr />
+<pre class="r"><code>library(tidyverse)
+library(broom)
+library(mlr)
+library(GGally)
+library(visdat)
+
+options(scipen = 999)
+
+nba &lt;- read_csv(&quot;../../data/mlmodels/nba_linear_regression.csv&quot;) %&gt;% glimpse</code></pre>
+<pre><code>## Observations: 78,739
+## Variables: 13
+## $ PTS         &lt;int&gt; 23, 30, 22, 41, 20, 8, 33, 33, 28, 9, 15, 24, 21, ...
+## $ FG2A        &lt;int&gt; 10, 17, 12, 14, 8, 7, 24, 12, 13, 11, 12, 13, 13, ...
+## $ FG3A        &lt;int&gt; 3, 3, 3, 6, 1, 2, 1, 4, 0, 2, 1, 0, 0, 2, 1, 3, 1,...
+## $ FTA         &lt;int&gt; 4, 9, 2, 21, 14, 4, 10, 15, 7, 4, 6, 5, 6, 12, 13,...
+## $ AST         &lt;int&gt; 5, 6, 1, 6, 10, 6, 3, 3, 6, 8, 4, 8, 4, 5, 7, 5, 7...
+## $ OREB        &lt;int&gt; 0, 2, 2, 1, 2, 0, 2, 4, 1, 0, 2, 0, 2, 1, 6, 0, 0,...
+## $ PF          &lt;int&gt; 5, 4, 1, 3, 5, 2, 2, 4, 3, 3, 3, 4, 2, 1, 2, 3, 5,...
+## $ TOV         &lt;int&gt; 5, 4, 4, 5, 2, 1, 0, 6, 4, 3, 6, 1, 1, 0, 1, 6, 2,...
+## $ STL         &lt;int&gt; 2, 0, 2, 2, 1, 1, 4, 4, 1, 0, 0, 2, 0, 2, 4, 5, 0,...
+## $ PACE        &lt;dbl&gt; 104.44, 110.01, 94.88, 103.19, 92.42, 93.35, 106.2...
+## $ MINS        &lt;dbl&gt; 35.0, 33.9, 36.1, 41.6, 34.4, 36.7, 39.9, 34.5, 35...
+## $ PLAYER_NAME &lt;chr&gt; &quot;Giannis Antetokounmpo&quot;, &quot;Giannis Antetokounmpo&quot;, ...
+## $ GAME_DATE   &lt;date&gt; 2017-02-03, 2017-02-04, 2017-02-08, 2017-02-10, 2...</code></pre>
+<pre class="r"><code>PTS &lt;- nba %&gt;% pull(PTS)
+FG2A &lt;- nba %&gt;% pull(FG2A)
+FTA &lt;- nba %&gt;% pull(FTA)</code></pre>
+<hr />
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Based on the result of <a href="/blog/mlr-linear-regression/">previous model</a> I decided to give up on using classic linear regression and try my luck in fitting other methods to the data I got. Analyzes of previous model indicated strong skewness and higher variance for observations with larger response values (it was heteroscedaskicity) and I am going to try to address that issue with the family of additive regression functions - Splines, Local Regression and Generalized Additive Models. The approach for all of them is quite similar, hence they are covered in one article. Let’s start!</p>
+<p><br></p>
+<hr />
+</div>
+<div id="splines" class="section level2">
+<h2>Splines</h2>
+<p>Spline is a function defined piecewise by polynomials… it’s first sentence of method describtion and I am already overwhelmed. Piecewise means that the function has different formula for each interval. That means f(x) can be equal to 3 for x lower than 3 and then f(x) might be equal to 2x for x greater or equal to 0.</p>
+<p>Polynomial is expression consisting of substracted/added/exponentially modified variables, for example f(x) x^2 + 3x.</p>
+<p>Let’s try to tackle another part… We are using splines to interpolate real function. Splines are calculated between each 2,3,4,…, n points. Dependent on which splines we choose, we need different number of data points (linear function has 2 parameters, so we need 2 points, quadratic has 3 and uses 3, cubic requires 4).</p>
+<p>Remember that splines need x variables to be sorted in ascending order before they are computed.</p>
+<p><br></p>
+<div id="linear-spline" class="section level3">
+<h3>Linear spline</h3>
+<p>That is just linear function connecting 2 points:</p>
+<p><span class="math display">\[ linear spline (x) = y(x_1) + \frac{y(x_2) - y(x_1)}{x_2 - x_1} (x-x_1)   \]</span>
+where X belongs to &lt;X1, X2&gt;</p>
+<p>Having points (x1,y1) and (x2,y2) we can calculate function above and receive linear spline for range between those two points.</p>
+<p>It’s very simple straight line interpolation, but disadvantage of it is that we don’t use information from any other observations except those two. Also slope of interpolation is discontinued (data point is likely to have different slope on each side). To avoid those problems we want to use some more complex interpolation.</p>
+<p><br></p>
+</div>
+<div id="quadratic-spline" class="section level3">
+<h3>Quadratic spline</h3>
+<p>Quadratic spline interpolates curve between 2 points, that is computed in the way to provide continuity of slope on data points. Each spline is quadratic equations with 3 unknows:</p>
+<p><span class="math display">\[ y(x) =  ax^2 + bx + c \]</span>
+Hence there are 3 coefficients to be computed we need to have 3 equations to do so. First 2 equations come obviously from borderline data points (x1,y1),(x2,y2) and the third one is provided by continuity condition. Quadratic splines model requires slopes to be equal on interior points, when interior point is finish point for first spline and start point for the second spline.</p>
+<p>So when we have 100 observations, we need to calculate 99 splines, each one of them contains 3 coefficients hence we need 297 equations overall to do so.</p>
+<ul>
+<li>198 equations are the result of using data points (external ones are used only once)</li>
+<li>98 equations are the result of matching derivatives from the left and right handside of a data point</li>
+<li>One last coefficient we get by assuming that the first or the last spline is linear, so we presume a is equal to 0. We have to do this, otherwise problem will be mathematically impossible to solve.</li>
+</ul>
+<p>Spline 0:</p>
+<p><span class="math display">\[ y_0 = b_0x_0 + c_0\]</span>
+<span class="math display">\[ y_1 = b_1x_1 + c_1\]</span></p>
+<p>Continuity of slope, calculated for internal point (x1,y1)</p>
+<p><span class="math display">\[ 2a_0x_1 + b_0 = 2a_1x_1 + b_1\]</span></p>
+<p>Spline 1:</p>
+<p><span class="math display">\[ y_1 = a_1x_1^2 + b_1x_1 + c_1\]</span>
+<span class="math display">\[ y_1 = a_1x_2^2 + b_1x_2 + c_1\]</span></p>
+<p>Continuity of slope, calculated for internal point (x2,y2)</p>
+<p><span class="math display">\[ 2a_1x_2 + b_1 = 2a_2x_2 + b_2\]</span></p>
+<p>And it goes on…</p>
+<p><br></p>
+</div>
+<div id="cubic-spline" class="section level3">
+<h3>Cubic spline</h3>
+<p>Most often used method. Uses cubic funtion to create spline interpolating real function behind the data. Thanks to comparing second derivatives, we make sure the general function is smoothed even better on internal points.</p>
+<p><span class="math display">\[ y(x) =  ax^3 + bx^2 + cx + d \]</span></p>
+<p>We use equations in similar fashion to the quadratic splines, but here we need to compare second derivatives as well.</p>
+<p>So when we have 100 observations, we need to calculate 99 splines, each one of them contains 4 coefficients hence we need 496 equations overall to do so.</p>
+<ul>
+<li>198 equations are the result of using data points (external ones are used only once)</li>
+<li>98 equations are the result of matching first derivatives from the left and right handside of a data point</li>
+<li>98 equations are the result of matching second derivatives from the left and right handside of a data point</li>
+<li>2 equations for endpoints, assuming that second derivatives of starting and finishing observation are equal to 0.</li>
+</ul>
+<p>First derivative:</p>
+<p><span class="math display">\[ y&#39;(x) =  3ax^2 + 2bx + c \]</span></p>
+<p>Second derivative:</p>
+<p><span class="math display">\[ y&#39;&#39;(x) =  6ax + 2b\]</span></p>
+<p>Natural condition for endpoints:</p>
+<p><span class="math display">\[ S&#39;&#39;(a)=S&#39;&#39;(b)=0. \]</span></p>
+<p><br></p>
+</div>
+<div id="example" class="section level3">
+<h3>Example</h3>
+<p>Let’s now run an example with spline regression using bs() function. Bs here stands for b-spline, just to be clear. It’s advantage is that can be ran with lm function (but not mlr package at this moment, since it is not supporting formula objects)</p>
+<p>For bs() there are 3 important hyperparameters:
+- knots: specified points when function will be changed
+- degree: degree of polynomial - default is 3 to get cubic splines
+- df: degrees of freedom: if specified, chooses knots at suitable quantiles (can be used instead of knots)</p>
+<p>How to find optimal hyperparameter? You either know whats the best set of knots can be, or just use cross validation.</p>
+<pre class="r"><code>lm_bs &lt;- lm(PTS ~ splines::bs(FG2A, df = 6), data = nba)
+broom::tidy(lm_bs)</code></pre>
+<pre><code>##                         term  estimate  std.error statistic
+## 1                (Intercept)  1.435588 0.06169867  23.26773
+## 2 splines::bs(FG2A, df = 6)1  1.365031 0.12383747  11.02276
+## 3 splines::bs(FG2A, df = 6)2  4.148201 0.11043365  37.56283
+## 4 splines::bs(FG2A, df = 6)3  7.862334 0.09270323  84.81187
+## 5 splines::bs(FG2A, df = 6)4 23.770708 0.23796098  99.89330
+## 6 splines::bs(FG2A, df = 6)5 30.732711 0.65448885  46.95681
+## 7 splines::bs(FG2A, df = 6)6 48.384056 1.43346075  33.75332
+##                                                                                                                                                                                                                                                                                                                      p.value
+## 1 0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000023847324683513225281224212626085545707610435783863067626953125000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+## 2 0.000000000000000000000000000311287484096202606898874665208865053500630892813205718994140625000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+## 3 0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004531909
+## 4 0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+## 5 0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+## 6 0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+## 7 0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000057057733175785530829043912248721426294650882482528686523437500000</code></pre>
+<hr />
+</div>
+</div>
+<div id="local-regression-loess" class="section level2">
+<h2>Local Regression (LOESS)</h2>
+<p>Local regression is non-parametric method trying to make a prediction for a data point using observations that are in near that point. This concept is very similar to well-known k-nearest neighbours.</p>
+<p>Local Regression algorithm iteratively goes through all observations and for each one (i.e. focal point per iteration) picks k nearest points to fit line or curve using OLS algorithm in that window. We are choosing the size of this window using cross validation.</p>
+<p>Another thing to remember is the fact that points are weighted using kernel function, so the closest points are more important than the points that are further from the focal point.</p>
+<p>After first, initial full prediction on whole training dataset, local regression goes through all points once again, this time to weight observations by the initial error terms i.e. the larger error term value, the lower weight because it is indicator of an outlier, that should not be taken into consideration for fitting data.</p>
+<pre class="r"><code>data(economics, package=&quot;ggplot2&quot;)  # load data
+economics$index &lt;- 1:nrow(economics)  # create index variable
+economics &lt;- economics[1:80, ]  # retail 80rows for better graphical understanding
+loessMod10 &lt;- loess(uempmed ~ index, data=economics, span=0.10) # 10% smoothing span
+loessMod25 &lt;- loess(uempmed ~ index, data=economics, span=0.25) # 25% smoothing span
+loessMod50 &lt;- loess(uempmed ~ index, data=economics, span=0.50) # 50% smoothing span
+
+
+smoothed10 &lt;- predict(loessMod10) 
+smoothed25 &lt;- predict(loessMod25) 
+smoothed50 &lt;- predict(loessMod50) 
+
+plot(economics$uempmed, x=economics$date, type=&quot;l&quot;, main=&quot;Loess Smoothing and Prediction&quot;, xlab=&quot;Date&quot;, ylab=&quot;Unemployment (Median)&quot;)
+lines(smoothed10, x=economics$date, col=&quot;red&quot;)
+lines(smoothed25, x=economics$date, col=&quot;green&quot;)
+lines(smoothed50, x=economics$date, col=&quot;blue&quot;)</code></pre>
+<p><img src="/blog/mlr-splines-loess-gams_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><br></p>
+<hr />
+</div>
+<div id="generalized-additive-models-gams" class="section level2">
+<h2>Generalized Additive Models (GAMs)</h2>
+<p>Generalized additive models are extension of general linearized models, which are extension of general linear model (I think I will cover differences in the next article - please find me NBA related variable that has pure poisson distribution).</p>
+<p>GAMs are very flexible method that applies parametric, nonparametric or spline transformation to each predictor before fitting the model (in which response can be transformed as well). It’s a way to fit data of many various distributions together and receive fine model. One big disadvantage is that they can be easily overfit - various nonparametric methods like splines can fit to the noise pretty fast, so we all have to be very cautious.</p>
+<p>I wish that one day I will write a paragraph which would have first letters of rows combining into ‘cross validation’.</p>
+<p><span class="math display">\[g(y) = β0 + f1(x1) + f2(x2) +…+ fn(xn)\]</span></p>
+<p>Once we got to know splines concept, GAMs are really simple to understand, but let’s see how this model is actually fitted, because (as in splines example) it might not be that obvious.</p>
+<div id="training-gams" class="section level3">
+<h3>Training GAMs</h3>
+<p>– to do:</p>
+<ul>
+<li>example for loess</li>
+<li>gams example and training (ols?)</li>
+<li>proper NBA tryout</li>
+</ul>
+</div>
+</div>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

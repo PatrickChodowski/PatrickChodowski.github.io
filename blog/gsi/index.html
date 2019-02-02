@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Good Shots Index - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>Good Shots Index</h1>
+
+
+<p class="timestamp">November 4, 2016</p>
+
+<div id="good-shots-index" class="section level3">
+<h3>Good Shots Index</h3>
+<p>Good Shots Index is my first approach to describe efficiency of NBA players. I get that its name is a bit lame, but its acronim is GSI which sounds way more geeky, which is good.Good shot is a shot that reasonably thinking NBA player would like to take in any play in any moment. He shoots it frequently and makes them on above league average efficiency.</p>
+<p>(Above quantile range for the shot of this type, to be exact. These are serious statistics with serious solutions!)</p>
+</div>
+<div id="how-exactly-do-you-classify-the-goodness" class="section level3">
+<h3>How exactly do you classify the ‘goodness’?</h3>
+<p>First of all, I calculate shooting percentage for every player, grouping them by shot type (e.g. jump shot, dunk) and shot zone (e.g. paint, left side long range, restricted area, right center three ). Once I got this, I launch the algorithm:</p>
+<ul>
+<li>If a shot is more frequent than median of all shots of a player and percentage is at least at the level of league’s quantile range then it is good. It is actually very good. ;)</li>
+<li>If shot is neigher frequent nor is efficient, it is a bad shot.</li>
+<li>If it is frequent but not efficient then it is really bad… Kobe.</li>
+<li>If It is not frequent but efficient then things get tricky but boring to describe - there are special cutoffs. I managed to find quite balanced solution with which I was happy. If you are really interested, feel free to send me a question.</li>
+</ul>
+<p>Once I got the ‘good flag’ sorted, I calculated the frequency of good shots for every player and then add some standarization to take number of games, attempts and position of a player into account. I do the simplest normalization (x-min/max-min) as a finishing touch.</p>
+<p>I got 2 statistics called <strong>GSI_POS</strong> and <strong>GSI_OVR</strong> which describe respectively GSI grouped by positions and GSI overall.</p>
+</div>
+<div id="what-does-the-value-of-gsi-mean." class="section level3">
+<h3>What does the value of GSI mean.</h3>
+<p>The way it normalized it, GSI has a value of 1 for the best player in the group and value of 0 for the worst one. GSI is perfect to display the distances between players but its direct value does not say much at this moment. Of course there is also a simple percentage of good shots, but it needs clever player grouping to draw conclusions.</p>
+</div>
+<div id="something-interesting" class="section level3">
+<h3>Something interesting?</h3>
+<p>Best result’s holder is <strong>Nikola Vucevic</strong>. Big Montenegrin was one of the shiniest sparkles of joy in the rather disappointing Orlando Magic season. Big men had easier life in general, because if you have basket within a reach, you are going to have dozens of good shots. Overall ranking is packed with Deandre Jordans of this league, so you got to give a credit to all the backcourt players that made it to top 15.</p>
+<p>The gravity of <strong>JJ Redick</strong> was deadly and got him No.3 overall. Not far behind are <strong>CJ McCollum</strong> - last season’s the most improved player - and former Thunder player <strong>Kevin Durant</strong>. No.11 is <strong>JR Smith</strong>, who earned himself his shirtless parade with spectacular season on the offensive end.</p>
+<p>Rookies? Well, there are only two in top 50 - rookie of the year <strong>Karl-Anthony Towns</strong> and Serbian phenomenom <strong>Nikola Jokic</strong>.</p>
+<p>How about the wrong end of rankings? As you might expect, <strong>Kobe Bryant</strong> is dead last, and yes, I included his final game. There is also the name of <strong>Demarcus Cousins</strong> amongst worst, but he has to carry whole city of Sacramento on his broad shoulders. I might consider replacing him with <strong>Vivek Ranadive</strong> on that particular list.</p>
+<p>We can see here the likes of <strong>Josh Smith</strong> and <strong>Randy Foye</strong> trying to understand the simplicity of basketball or <strong>Emmanuel Mudiay</strong> who was really digging deep past season. Oh, and who is that? Is.. is that… Kev… <strong>Kevin Love</strong>…? He is now an NBA champion, so it does not matter.</p>
+<p>Oh, in case you are still wondering, <strong>Steph Curry</strong> attempted almost 1600 shots and 60% of them were good. <strong>GSI</strong> has him 4th in guards behind <strong>Redick</strong>,<strong>McCollum</strong> and <strong>CP3</strong>.</p>
+</div>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

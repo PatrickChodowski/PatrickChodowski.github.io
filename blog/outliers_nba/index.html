@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Detecting outlying statlines in NBA - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>Detecting outlying statlines in NBA</h1>
+
+
+<p class="timestamp">November 28, 2017</p>
+
+<p>We all know what happens on social media after - insert name of random/unknown/boring/funny/weird/forgotten player - all of sudden makes all 8 of his 3 point attempts, scores thousands of points and wins that very important game in mid-January for his team. You know, the monthly-Jeff-Green-can-be-a-factor-in-the-playoffs game.</p>
+<p>We have seen the Brandon-Jennings-scoring-55-as-a-rookie game. That Kendrick-Perkins-owns-Nuggets-in-the-paint-with-16pts performance (that, for me as a Nuggets fan, was heartbreaking). All those Dwight-Howard-after-years-of-struggle-is-finally-back games. Jonas Valanciunas pump-fake finally fools a defender. Jahlil Okafor enters the game. Twitter is buzzing. Blogposts are being written. Video-analysis are conducted. Bruno Caboclo becomes new Kevin Durant. You can watch every single highlight from all 28 angles on YouTube.</p>
+<p>Things are not better at the other side of basketball world. When the superstar player ends a game with just a couple of buckets and miserable field goal percentage, he may read a lot about his actual health, relationship with teammates, minutes he plays and maybe it is a time for a panic trade to safe the season.</p>
+<p>But tomorrow they play next game and everything comes back to norm. We all forget about the guy and move on to the next big interesting thing.</p>
+<p>Those situations are called <strong>outliers</strong> and they are integral part of any repetitive process that can be described in numbers. NBA regular season consists of 1230 games and in every one of those games there are 25 players working hard to fill the stat sheets - which sounds like an accounting. But this is what we nerds get in the end.</p>
+<p>For me personally there is only one thing worse than overreacting to the outlying performance - that is using SAS.</p>
+<p>It’s not true.</p>
+<p>But using SAS is still a bad idea. The thing that is worse than outliers fever is the <strong>Small sample size</strong> mania at the start of each season. You know, all those guys looking through the stats after first 2 games and then tweeting:</p>
+<blockquote>
+<p>Ish Smith is leading the league in that advanced stat per game, with some ridiculous, almost made up number. He is on the pace to accumulate gazilllions of that stat after 82 games! It is sooo craaazy!</p>
+<p>But you know why?</p>
+<p>You exactly know why.</p>
+</blockquote>
+<blockquote>
+<p>HASHTAG SMALL SAMPLE SIZE</p>
+</blockquote>
+<blockquote>
+<p>So you know that number is not real! Ha!</p>
+</blockquote>
+<p>It probably annoys me more than it should and you don’t have to agree with me. It may even be funny. Who knows. Anyway, let’s go back to the main topic.</p>
+<p>We are almost in 25% of 2017/18 regular season and most of the players have already played around 20 games. I decided to go through the data and search for the performances which for some reason were out of place.</p>
+<p>(That’s the part of blog post when I explain the method I use, I will let you know when I am done)</p>
+<p>So there is very good tool that can be used for identifying outlying observations and that is z-score:</p>
+<p><span class="math display">\[ Z = \frac{X - mean(X)}{stdev(X)}\]</span></p>
+<p>Which is very simple to use and explain. You take the number, subtract the mean of all observations from it and then divide it by standard deviation of all observations. If Z is larger than 3 or smaller then -3 then we have an outlier.</p>
+<p>But this time I am going to use modified version of that.. and not just because I want to have a fancy blog - Z-score itself is unfortunately prone to outliers. If there is already a very high value in the data it will make the mean and standard deviation values increase, which in turn will make Z score go smaller for incoming observations.</p>
+<p>To avoid such situation I will use modified z-score which is based on median and median absolute deviation which are much more stable distribution statistics.</p>
+<p>Let’s see the King’s stats. Lebron played in 20 games, averaging 28.55 points per game. Measuring by z-score there was only one outlying game (Z = 3.1) and that was his 57-points game against Washington Wizards on 3rd November. You can see below what difference in given statistics that one game makes</p>
+<p>Mean drops by 6% when in the same time median stays exactly the same. Standard deviation goes down by 30%, while median standard deviation is reduced by just 12%. Conclusion is simple, using modified z-score will result in much more stable outcome across whole season.</p>
+<p><span class="math display">\[ Z = \frac{X - median(X)}{MAD(X)}\]</span></p>
+<p>I just can’t help myself with writing MAD in uppercase. It is just more fitting that way.</p>
+<p>THEORY PART IS FINISHED</p>
+<p>So I quickly prepared modified z-score as R function (could not find a package with that)</p>
+<pre class="r"><code>modified_z &lt;- function(x){
+    ma &lt;- mad(x)
+    me &lt;- median(x)
+    zscore &lt;- (x-me)/ma
+    return(zscore)
+  }</code></pre>
+<p>Then I queried all the box scores with traditional stats that can be found on <a href="www.NBA.com">NBA.com</a>. If you are R user, you can download that data yourself in very easy manner thanks to my <a href="https://github.com/PatrickChodowski/NBAr">NBAr package</a>. If you are python user - there is a small chance I will rewrite those functions for python as well. If you prefer Stata or SPSS, don’t ask for .csv files and start using some proper tool, it’s almost 2018. If eventually you prefer SAS for some reason, you probably don’t care about such fun things like basketball.</p>
+<p>Below you will find the code for finding outliers. Keep in mind that I have just started my transition to tidyverse way of code and I am pretty sure some parts could have been written better.</p>
+<pre class="r"><code>p &lt;- 5
+trad &lt;- traditional %&gt;%
+            filter(GAME_ID &gt;= 21700000 &amp; COMMENT == &#39;&#39;) %&gt;%
+            left_join(schedule, by = &#39;GAME_ID&#39;) %&gt;%
+            mutate(VERSUS = ifelse(TEAM_ABBREVIATION == HOME, VISITOR, HOME)) %&gt;%
+            select(PLAYER_NAME,GAME_DATE,VERSUS,PTS,AST,REB,BLK,STL,TO,
+                   FGA,FTA,FG3A,MINS, FGM,FG3M, FTM) %&gt;%
+            group_by(PLAYER_NAME) %&gt;%
+            mutate (RN = 1:n()) %&gt;%
+            filter(max(RN) &gt;= 10) %&gt;%
+            mutate(mPTS = modified_z(PTS), mAST = modified_z(AST),
+                   mREB = modified_z(REB), mBLK = modified_z(BLK),
+                   mSTL = modified_z(STL), mTO = modified_z(TO),
+                   mFGA = modified_z(FGA), mFTA = modified_z(FTA),
+                   mFG3A = modified_z(FG3A), mMINS = modified_z(MINS)
+                   ) %&gt;%
+            filter(abs(mPTS) &gt;= p | abs(mAST) &gt;=p |
+                   abs(mREB) &gt;= p | abs(mBLK) &gt;=p |
+                   abs(mSTL) &gt;= p | abs(mTO) &gt;=p |
+                     abs(mFGA) &gt;= p | abs(mFTA) &gt;=p |
+                     abs(mFG3A) &gt;= p | abs(mMINS)  &gt;=p ) %&gt;%
+            drop_na()</code></pre>
+<p>I picked some some basic basketball stats for that. Simple things that have been filling stat sheets for years. Points, rebounds, assists, steals, turnovers, blocks, minutes, 3-points attempts, field goal attempts, free throws. That’s it. Let me know if there is particularly interesting advanced value that should be taken into consideration.</p>
+<p>Also added the filter to analyse players which played at least in 10 games. Border value for modified Z-score can stay at 3 which gives us 151 outliers (2.3% of all observations). But I would rather pick the most extreme ones to avoid excessive dullness - so I set the value to 5, which resulted in 18 most outlying player performances so far in 2017/18 season.</p>
+<p><strong>Biggest so far:</strong></p>
+<p><strong>22 Points from Raul Neto against Brooklyn Nets: (Z=12)</strong></p>
+<div class="figure">
+<img src="../outliers_nba_files/neto.png" alt="Raul Neto" />
+<p class="caption">Raul Neto</p>
+</div>
+<p><strong>Classic Lance Stephenson start of the season (Z=8.7)</strong></p>
+<div class="figure">
+<img src="../outliers_nba_files/lance.png" alt="Lance" />
+<p class="caption">Lance</p>
+</div>
+<p><strong>The Lonzo Ball one! (Z=5.4)</strong></p>
+<div class="figure">
+<img src="../outliers_nba_files/lonzo.png" alt="Lonzo" />
+<p class="caption">Lonzo</p>
+</div>
+<p><strong>Actual low point (-6.4)</strong></p>
+<div class="figure">
+<img src="../outliers_nba_files/pg.png" alt="PG" />
+<p class="caption">PG</p>
+</div>
+<p><strong>Aaron Gordon during Orlando’s hot start (5.6)</strong></p>
+<div class="figure">
+<img src="../outliers_nba_files/aaron.png" alt="AG" />
+<p class="caption">AG</p>
+</div>
+<p><strong>15 rebounds for a guard is an achievement (Z=7)</strong></p>
+<div class="figure">
+<img src="../outliers_nba_files/oladipo.png" alt="Oladipo" />
+<p class="caption">Oladipo</p>
+</div>
+<p>And this is it! I hope you you find it interesting and if you have any comments you can leave them below or talk to me on Twitter. Feel free to share it article if you like it!</p>
+<p>btw. code for plotting:</p>
+<pre class="r"><code>plot_player &lt;- function(row, ds, p){
+  require(ggplot2)
+  require(ggthemes)
+  require(tidyverse)
+  
+  ro &lt;- row %&gt;%
+    gather() %&gt;%
+    filter(key %in% c(&#39;PLAYER_NAME&#39;,&#39;GAME_DATE&#39;,&#39;VERSUS&#39;) |
+             (grepl(&#39;^m&#39;,key) &amp;as.numeric(value) &gt;= p)) %&gt;%
+    mutate(kpi = sub(&#39;^m&#39;,&#39;&#39;,key))
+
+   player &lt;- unique(ro$value[ro$key == &#39;PLAYER_NAME&#39;])
+   gd &lt;- unique(ro$value[ro$key == &#39;GAME_DATE&#39;])
+   vs &lt;- unique(ro$value[ro$key == &#39;VERSUS&#39;])
+   kpis &lt;- ro$kpi[!ro$kpi %in% c(&#39;PLAYER_NAME&#39;,&#39;GAME_DATE&#39;,&#39;VERSUS&#39;)]
+   
+   sv &lt;- row[,kpis] %&gt;% gather(kpi,spv)
+  
+
+    p &lt;- ds %&gt;%
+    filter(GAME_ID &gt;= 21700000 &amp; COMMENT == &#39;&#39; &amp; PLAYER_NAME == player) %&gt;%
+    select(PLAYER_NAME,GAME_DATE, kpis)  %&gt;%
+    gather(&#39;kpi&#39;, &#39;value&#39;, gather_cols=kpis) %&gt;%
+    left_join(sv, by = &#39;kpi&#39;) %&gt;%
+    mutate(clr = ifelse(GAME_DATE == gd, &#39;red&#39;,&#39;blue&#39;)) %&gt;%
+    mutate(sz = ifelse(GAME_DATE == gd, &#39;5&#39;,&#39;3&#39;)) %&gt;%
+    ggplot(aes(kpi, value))  +
+    geom_boxplot(outlier.shape = NA) +
+    geom_jitter(aes(fill=clr, size = sz), shape = 21, width = 0.1, height = 0.1) +
+    theme_wsj()  +
+    theme(legend.position=&quot;none&quot;) +
+    ggtitle(paste(player, &#39; vs &#39;, vs,&#39;\n&#39;,gd,sep=&#39;&#39;))
+    print(p)
+  
+}</code></pre>
+<p>This is luckily mostly tidyverse code but then I used FOR loop to plot all examples, keeping this project as inconsistent as it can get.</p>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

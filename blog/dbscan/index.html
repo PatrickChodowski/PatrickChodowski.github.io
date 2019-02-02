@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>DBSCAN approach to finding outliers among players - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>DBSCAN approach to finding outliers among players</h1>
+
+
+<p class="timestamp">November 18, 2016</p>
+
+<p>Although DBSCAN creates clusters on big and noticeably divided datasets I use it here mainly to find outliers among all players. That means it would distinguish all-stars players or those on the other side of NBA rankings. Luckily, it was the first one.</p>
+<pre class="r"><code>library(factoextra)
+library(fpc)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(tibble)
+
+players &lt;- read_rds(&quot;../../data/dbscan/players.RDS&quot;) %&gt;%
+  remove_rownames() %&gt;% 
+  column_to_rownames(var = &#39;PLAYER_NAME&#39;)
+
+dbs &lt;- fpc::dbscan(players, eps = 4 ,MinPts = 200, scale= TRUE, method = &#39;raw&#39;)
+fviz_cluster(dbs, players, stand = FALSE, ellipse = FALSE, geom = &quot;text&quot;,labelsize = 5) +
+  theme_bw() + 
+  theme(legend.position=&quot;none&quot;) </code></pre>
+<p><img src="/blog/dbscan_files/figure-html/plotdb-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>So it worked fantastic in highlighting players who stand out among the field in one way or another. And thats it for now. I am going to find out one day, how to exploit full capabilities of DBSCAN algorithm.</p>
+<p>To create a cluster and a plot I used packages fpc and factoextra (based on ggplot2).</p>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

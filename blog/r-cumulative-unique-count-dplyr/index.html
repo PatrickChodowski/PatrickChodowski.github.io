@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>How to do cumulative unique count with R and dplyr - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>How to do cumulative unique count with R and dplyr</h1>
+
+
+<p class="timestamp">August 23, 2018</p>
+
+<p>Couple of days ago I had to find a way to visualize in R cumulative number of unique customers over period of time. Having data with dates and customer ids ready I felt pretty confident that I will finish the task in seconds and most of the time will be eaten by loading tidyverse package. Damn I could have felt the coffee break LOOMING behind my screen.</p>
+<p>Little did I know back then but apparently there is no function yet to do just that one task. I am always a bit shocked or/and sad when I am not able to do a task with purrr dplyr and this seemed like a case.</p>
+<p>So checked cumstats…. none.</p>
+<p>Maybe TTR?…… none.</p>
+<p>…Plyr?</p>
+<p>DataTable? Probably, but I want to keep code sort of in one format.</p>
+<p>All of a sudden instead LOOMING break I was facing a danger of me LOOPING the data.
+Which is dreadful.</p>
+<p>I searched and then I searched, then I tried some things and then tried some more. At the end of the day (not literally, it did not take me so much time…) I got result which satisfied my needs:</p>
+<div id="this-is-the-solution-with-minimal-example" class="section level3">
+<h3>This is the solution with minimal example:</h3>
+<pre class="r"><code>suppressPackageStartupMessages(library(tidyverse))
+
+df &lt;- tibble(
+  item = c(1,2,3,4,5,6,1,2,3,7,4,8,9),
+  day = c(1,1,1,1,1,1,2,2,2,2,3,3,3)
+)
+
+df</code></pre>
+<pre><code>## # A tibble: 13 x 2
+##     item   day
+##    &lt;dbl&gt; &lt;dbl&gt;
+##  1     1     1
+##  2     2     1
+##  3     3     1
+##  4     4     1
+##  5     5     1
+##  6     6     1
+##  7     1     2
+##  8     2     2
+##  9     3     2
+## 10     7     2
+## 11     4     3
+## 12     8     3
+## 13     9     3</code></pre>
+<p>Dataset has date-alike column (day number) and unique item id which we want to accumulate, first we need to group-nest ids over date (I have no clue how well or badly it scales…).</p>
+<pre class="r"><code>suppressPackageStartupMessages(library(tidyverse))
+
+stage &lt;- df %&gt;% 
+  group_by(day) %&gt;%
+  summarise(item =  list(unique(item)))
+
+stage</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##     day item     
+##   &lt;dbl&gt; &lt;list&gt;   
+## 1     1 &lt;dbl [6]&gt;
+## 2     2 &lt;dbl [4]&gt;
+## 3     3 &lt;dbl [3]&gt;</code></pre>
+<p>Then map function written below…</p>
+<pre class="r"><code>cumulative_n_distinct = function(x){
+  require(purrr)
+  require(dplyr)
+                   y &lt;- x %&gt;%
+                   accumulate(append) %&gt;%
+                   map(.,n_distinct) %&gt;%
+                     as.numeric
+  
+  return(y)
+}</code></pre>
+<p>..to our nested dataset:</p>
+<pre class="r"><code>stage %&gt;%
+  mutate(n_uniqe_cum = cumulative_n_distinct(item)) %&gt;%
+  select(day, n_uniqe_cum) </code></pre>
+<pre><code>## # A tibble: 3 x 2
+##     day n_uniqe_cum
+##   &lt;dbl&gt;       &lt;dbl&gt;
+## 1     1           6
+## 2     2           7
+## 3     3           9</code></pre>
+<p>Voila!</p>
+<p>Take in mind that this example is quite minimal and my task also wasn’t including very big dataset (around 1000 customers). Still feel free to copy-paste, leave a comment or maybe improve the solution!</p>
+<p>Cheers</p>
+</div>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

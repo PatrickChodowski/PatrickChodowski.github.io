@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Clustering teams by their defense p1 - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>Clustering teams by their defense p1</h1>
+
+
+<p class="timestamp">November 7, 2016</p>
+
+<p>In the first part I want to simply divide NBA teams by zones from which their opponents are shooting more frequent than from the others. These are not complex clusters that would provide me a little bit of insight if there is any difference between teams. My overall assumption is that better teams would allow less shots from “danger zones” which are Restricted Area and Three Point Line.</p>
+<p>There are of course only 30 observations, one for each team, and five variables describing frequency for each zone (Restrcited Area, Paint, Mid-Range, Long-Range, 3Point Line). For such simple data I will use as simple methods which are famous and popular k-means and k-medoids.</p>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p>I created five standarized variables based on original frequency columns. Bear in mind, that those percentages do not include garbage time, which I consider as unnecessary noise. We can call it like “significant game time percentage” or something similar. Final dataset looks like this:</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">team</th>
+<th align="center">lr.f</th>
+<th align="center">mr.f</th>
+<th align="center">pa.f</th>
+<th align="center">ra.f</th>
+<th align="center">tr.f</th>
+<th align="center">lr.fnorm</th>
+<th align="center">mr.fnorm</th>
+<th align="center">pa.fnorm</th>
+<th align="center">ra.fnorm</th>
+<th align="center">tr.fnorm</th>
+<th align="center">w</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="center">Atlanta Hawks</td>
+<td align="center">17.40</td>
+<td align="center">13.67</td>
+<td align="center">7.60</td>
+<td align="center">32.97</td>
+<td align="center">28.36</td>
+<td align="center">0.8830860</td>
+<td align="center">-0.0434870</td>
+<td align="center">-1.7813960</td>
+<td align="center">0.2897754</td>
+<td align="center">0.0142405</td>
+<td align="center">48</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="center">Boston Celtics</td>
+<td align="center">16.09</td>
+<td align="center">14.10</td>
+<td align="center">10.29</td>
+<td align="center">32.10</td>
+<td align="center">27.43</td>
+<td align="center">-0.0729823</td>
+<td align="center">0.2517666</td>
+<td align="center">1.0220100</td>
+<td align="center">-0.1864927</td>
+<td align="center">-0.3752787</td>
+<td align="center">48</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="center">Brooklyn Nets</td>
+<td align="center">14.68</td>
+<td align="center">11.46</td>
+<td align="center">8.52</td>
+<td align="center">35.23</td>
+<td align="center">30.11</td>
+<td align="center">-1.1020329</td>
+<td align="center">-1.5609526</td>
+<td align="center">-0.8226103</td>
+<td align="center">1.5269776</td>
+<td align="center">0.7472066</td>
+<td align="center">21</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="outliers" class="section level3">
+<h3>Outliers</h3>
+<p>Since k-means can be really prone to outliers I like to use DBSCAN algorithm to find outliers and exclude them from final clustering. I found it highly beneficial for the quality of final results. I set minPts = 1 from “number of variables + 1” rule.</p>
+<p><img src="/blog/team_def1_files/figure-html/dbsplot-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>So in this case my outliers will be Memphis Grizzlies and Sacramento Kings, those teams must be unlike anything else. We knew that before about Kings, didn’t we?</p>
+</div>
+<div id="k-means" class="section level3">
+<h3>K-means</h3>
+<p>I set 5 centers for the algorithm, after a bit of trial-and-error searching.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">Clusters k-means</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="center">Brooklyn Nets; Houston Rockets; Los Angeles Lakers; Milwaukee Bucks; Minnesota Timberwolves; Oklahoma City Thunder; Orlando Magic</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="center">Boston Celtics; Chicago Bulls; New York Knicks; Philadelphia 76ers; Utah Jazz</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="center">Atlanta Hawks; Charlotte Hornets; Denver Nuggets; Indiana Pacers; New Orleans Pelicans</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="center">Dallas Mavericks; Los Angeles Clippers; Phoenix Suns; Portland Trail Blazers; Toronto Raptors; Washington Wizards</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td align="center">Cleveland Cavaliers; Detroit Pistons; Golden State Warriors; Miami Heat; San Antonio Spurs</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/blog/team_def1_files/figure-html/mosaic-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="k-medoids" class="section level3">
+<h3>K-medoids</h3>
+<p>Although K-medoids algorithm is more robust to outliers I still exclude outliers from the run just to be sure they do not mess up results.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">Clusters k-medoids</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="center">Brooklyn Nets; Denver Nuggets; Houston Rockets; Los Angeles Lakers; Milwaukee Bucks; Minnesota Timberwolves; Oklahoma City Thunder; Orlando Magic</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="center">Boston Celtics; New York Knicks; Philadelphia 76ers; Phoenix Suns; Toronto Raptors; Utah Jazz</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="center">Atlanta Hawks; Charlotte Hornets; Dallas Mavericks; Indiana Pacers; New Orleans Pelicans</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td align="center">Chicago Bulls; Los Angeles Clippers; Portland Trail Blazers; Washington Wizards</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td align="center">Cleveland Cavaliers; Detroit Pistons; Golden State Warriors; Miami Heat; San Antonio Spurs</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/blog/team_def1_files/figure-html/mosaic1-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="insights" class="section level3">
+<h3>Insights</h3>
+<p>It is nice to to see that some patterns and even clusters are similar across both methods… and infinitive number of small polishes and adjustments</p>
+<ol style="list-style-type: decimal">
+<li>Pistons, Cavaliers, Warriors, Heat and Spurs are rock solid within their group</li>
+<li>…So are Nets, Rockets, Lakers, Bucks, Wolves, Thunder and Magic</li>
+<li>….Aaaaaand Hornets, Hawks, Pacers and Pelicans</li>
+<li>Also Blazers, Wizards and Clippers seem to work together.</li>
+<li>Not to forget of Celtics, Knicks and Sixers.</li>
+</ol>
+<p>On the other hand teams like Mavericks, Nuggets, Bulls, Jazz, Suns, Raptors seem to be standing on the borders between two clusters. Their position strongly depend on the randomness of each instance of an algorithm.</p>
+</div>
+<div id="answer" class="section level3">
+<h3>Answer</h3>
+<p>Do better teams really allow their opponents to shoot less from the Three Point Line and Restricted Area? Mosaic plots visualize the answer almost clearly. After sorting clusters by their average number of wins during regular season, we can see the slight trend of decreasing frequency of Restricted Area and Three Point shots. In fact there is huge difference between distribution of shots between the first and the last cluster. For me it is enough to confirm my assumptions.</p>
+</div>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

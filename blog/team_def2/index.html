@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Clustering teams by their defense p2 - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>Clustering teams by their defense p2</h1>
+
+
+<p class="timestamp">November 14, 2016</p>
+
+<p>This is the second part of my cluster analysis of NBA teams. In this paper I am looking for groups of teams based on their opponents percentages from certain areas on the court. I use slightly different methods than in previous analysis, not only just to try it out, but I found out that every method result in divergent clusters and in this case following algorithm suit me the best.</p>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p>I created five standarized variables based on original efficiency columns. Bear in mind, that those percentages do not include garbage time, which I consider as unnecessary noise. We can call it like “significant game time percentage” or something similar. Final dataset looks like this:</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">team</th>
+<th align="center">lr.ef</th>
+<th align="center">mr.ef</th>
+<th align="center">pa.ef</th>
+<th align="center">ra.ef</th>
+<th align="center">tr.ef</th>
+<th align="center">lr.efnorm</th>
+<th align="center">mr.efnorm</th>
+<th align="center">pa.efnorm</th>
+<th align="center">ra.efnorm</th>
+<th align="center">tr.efnorm</th>
+<th align="center">abr</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td align="center">Atlanta Hawks</td>
+<td align="center">37.93</td>
+<td align="center">38.04</td>
+<td align="center">39.92</td>
+<td align="center">56.70</td>
+<td align="center">33.77</td>
+<td align="center">-1.2311723</td>
+<td align="center">-1.7127106</td>
+<td align="center">0.3156051</td>
+<td align="center">-1.4372570</td>
+<td align="center">-1.201666</td>
+<td align="center">ATL</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="center">Boston Celtics</td>
+<td align="center">39.76</td>
+<td align="center">38.79</td>
+<td align="center">36.81</td>
+<td align="center">60.01</td>
+<td align="center">33.70</td>
+<td align="center">-0.0735878</td>
+<td align="center">-1.2074531</td>
+<td align="center">-1.0946418</td>
+<td align="center">-0.0568564</td>
+<td align="center">-1.253632</td>
+<td align="center">BOS</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="center">Brooklyn Nets</td>
+<td align="center">41.35</td>
+<td align="center">41.02</td>
+<td align="center">41.09</td>
+<td align="center">63.03</td>
+<td align="center">37.03</td>
+<td align="center">0.9321823</td>
+<td align="center">0.2948458</td>
+<td align="center">0.8461481</td>
+<td align="center">1.2026028</td>
+<td align="center">1.218493</td>
+<td align="center">BKN</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="reducing-dimensionality" class="section level3">
+<h3>Reducing dimensionality</h3>
+<p>There is high probability that for most defenders there is no difference if they are guarding in mid-range or in long-range zone. Let’s check if there are significant collinearities between some variables.</p>
+<p>I used package corr for nice visualization:</p>
+<p><img src="/blog/team_def2_files/figure-html/cor-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre><code>## # A tibble: 5 x 6
+##   rowname   lr.ef    mr.ef   pa.ef  ra.ef   tr.ef
+##   &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+## 1 lr.ef   NA        0.0155   0.305  0.378  0.479 
+## 2 mr.ef    0.0155  NA      - 0.138  0.276  0.0223
+## 3 pa.ef    0.305  - 0.138   NA      0.106  0.370 
+## 4 ra.ef    0.378    0.276    0.106 NA      0.358 
+## 5 tr.ef    0.479    0.0223   0.370  0.358 NA</code></pre>
+<p>Thick redish lines indicate negative correlations between variables. Collinearities at the level above 45% indicate that model would benefit from reducing number of dimensions.</p>
+<p>Over-dimensionality can be reduced by applying Factor Analysis algorithm, among others, and it is exactly what I am going to do. Chart below presents how newly formed factors (score1, score2) explain the variance across teams.</p>
+<p><img src="/blog/team_def2_files/figure-html/fa-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="hierarchical-clustering" class="section level3">
+<h3>Hierarchical clustering</h3>
+<p>Across all methods I found the “complete” hierarchical clustering working the best for my data. It helped me to avoid combining teams that defend poorly in the same zone, but one of them defends poorly everywhere, and the other one is totally ok in the rest of the areas. I called it a Rocket-Cavaliers case. Brilliant.</p>
+<p><img src="/blog/team_def2_files/figure-html/hca-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="insights" class="section level3">
+<h3>Insights</h3>
+<p>Lets take a moment and appreaciate Atlanta Hawks, because this team is in class of its own in terms of defense efficiency. They are next to the group of really good defensive teams which include Spurs, almost-champs, athletic OKC, a couple of smart teams with great coaches and - barely - lazy in regular season NBA champions Cleveland Cavaliers.</p>
+<p>The group of Raptors, Grizzlies and Blazers consists of 3 outliers, which is easily confirmed by DBSCAN algorithm.</p>
+<p>There is 13-team cluster containing many teams which finished outside of playoffs or left them early (Dallas, Houston, Detroit) or they lie just at the deepest of bottoms (Phoenix, Philly, Brooklyn, Sacramento… its going on.)</p>
+</div>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

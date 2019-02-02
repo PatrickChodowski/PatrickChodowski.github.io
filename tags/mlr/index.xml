@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mlr on Per 48 minutes</title>
+    <link>/tags/mlr/</link>
+    <description>Recent content in Mlr on Per 48 minutes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 21 Apr 2018 21:30:00 +0100</lastBuildDate>
+    
+	<atom:link href="/tags/mlr/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>NBA Machine Learning #1 - Linear Regression with mlr package</title>
+      <link>/blog/linear_regr_1/</link>
+      <pubDate>Sat, 21 Apr 2018 21:30:00 +0100</pubDate>
+      
+      <guid>/blog/linear_regr_1/</guid>
+      <description>IntroductionIntroductionSo I came up with an idea to write series of articles describing how to apply machine learning algorithms on some examples of NBA data. Got to say that plan is quite ambitious - I want to start with machine learning basics, go through some common data problems, required preprocessing tasks and obviously, algorithms. Starting with Linear Regression and hopefully finishing one day with Neural Networks or any other mysterious blackbox.</description>
+    </item>
+    
+  </channel>
+</rss>

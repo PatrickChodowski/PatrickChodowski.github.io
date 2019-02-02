@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/blog/julia-read-json-https-nba/</loc>
+    <lastmod>2019-02-02T20:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/r-cumulative-unique-count-dplyr/</loc>
+    <lastmod>2018-08-23T20:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/mlr-splines-loess-gams/</loc>
+    <lastmod>2018-05-30T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/mlr-linear-regression/</loc>
+    <lastmod>2018-05-15T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/mlr-model-building/</loc>
+    <lastmod>2018-04-22T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/matchups_playoffs/</loc>
+    <lastmod>2018-04-14T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/nbar11/</loc>
+    <lastmod>2018-04-09T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/player_dashb/</loc>
+    <lastmod>2018-03-19T21:20:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/outliers_nba/</loc>
+    <lastmod>2017-11-28T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/cavsgsw/</loc>
+    <lastmod>2017-07-01T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/stoptheball/</loc>
+    <lastmod>2017-06-03T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/nbar/</loc>
+    <lastmod>2017-05-05T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/home/</loc>
+    <lastmod>2017-02-05T07:51:49+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/dbscan/</loc>
+    <lastmod>2016-11-18T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/tsne/</loc>
+    <lastmod>2016-11-18T21:20:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/treemap/</loc>
+    <lastmod>2016-11-17T21:20:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/offense_mclust/</loc>
+    <lastmod>2016-11-15T21:20:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/team_def2/</loc>
+    <lastmod>2016-11-14T21:20:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/team_def1/</loc>
+    <lastmod>2016-11-07T21:20:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/gsi/</loc>
+    <lastmod>2016-11-04T21:20:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/about/</loc>
+    <lastmod>2016-05-05T21:48:51-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/apps/</loc>
+    <lastmod>2016-05-05T21:48:51-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/</loc>
+    <lastmod>2019-02-02T20:30:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2019-02-02T20:30:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

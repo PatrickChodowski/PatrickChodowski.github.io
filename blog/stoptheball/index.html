@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Stop the ball in transition - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>Stop the ball in transition</h1>
+
+
+<p class="timestamp">June 3, 2017</p>
+
+<p>Just seconds before you finished your spectacular dribbling showcase, barely left defender behind your back and tried that wild shot which was perfect, beside the fact that ball bricked the glass and your teammates had no chance to rebound it, since all of them were waiting for a pass on the weakside.</p>
+<p>Shooters have short memory, they say.</p>
+<p>Now you are running back on defense, turning around and seeing 7 feet of Kevin Durant approaching a bit too fast with the ball. On his left, couple of meters in front, Stephen Curry just stopped 9 meteres away from your precious basket you want to defend so much now. You know that your cool friend Kevin already hugged Klay Thompson in the corner. You are the first and the last line of defense. You gotta choose - go against Durantula and stop the ball or go towards Steph to prevent losing potential 3 points.</p>
+<p>For all these years they were telling you</p>
+<p>‘Yout gotta stop damn ball Kyrie’</p>
+<p>‘Stop DAMN ball no matter what’</p>
+<p>‘Transition, man. The ball must be stopped…’</p>
+<p>But it’s Steph Curry, golden boy of golden boys, waiting with his hands up ready to catch and shoot the ball within the blink of an eye. Of course he is going to make a three. We do not want to let them score three, no way.</p>
+<p>You choose Steph. Kevin Durant runs by you like it is not your business and spikes the ball through the net.</p>
+<p>After Cavaliers committed 20 turnovers in the finals and Warriors were in transition gazillion times, it made me think if there ever might be a good idea to leave dribbling player alone and go blindly to the shooter. Lets apply some simple maths.</p>
+<p>Lets check Stephen’s Curry field goal percentage for 3 pointers in transition. Unfortunately NBA.com does not provide direct stat: 3 pointers made in transition wide open with no dribble… so I have to use shooting dashboard to get the numbers. I am using package NBAr (This is my work so I am going to use it and tell you about it everytime) to get the data:</p>
+<p>Filters: - Data from playoffs till 30th May - No dribbles - Shot attempted between 22 and 18 seconds on the shotclock - Ball touched for less then 2 seconds - Closest defender at least 6 feet away</p>
+<pre class="r"><code>require(NBAr)
+transitions.shots &lt;- getShootingDashboard(&#39;2016&#39;,&#39;Player&#39;,PerMode = &#39;Totals&#39;,
+                                          SeasonType = &#39;Playoffs&#39;,
+                     CloseDefDistRange = &#39;6%2B+Feet+-+Wide+Open&#39;
+                     , TouchTimeRange = &#39;Touch+&lt;+2+Seconds&#39;
+                     , ShotClockRange = &#39;22-18+Very+Early&#39;   
+                     , DribbleRange = &#39;0+Dribbles&#39;
+                     , DateTo &lt;- &quot;05/28/2017&quot;
+                     )
+
+
+steph &lt;- transitions.shots[transitions.shots$PLAYER_NAME == &#39;Stephen Curry&#39;,
+                           c(&#39;PLAYER_NAME&#39;,&#39;FG3M&#39;,&#39;FG3A&#39;,&#39;FG3_PCT&#39;)] 
+#steph
+
+#0.6</code></pre>
+<p>0.6 in the playoffs but only on 5 shots. It is a small sample so lets just check regular season stats to find more accurate number:</p>
+<pre class="r"><code>require(NBAr)
+transitions.shots &lt;- getShootingDashboard(&#39;2016&#39;,&#39;Player&#39;,PerMode = &#39;Totals&#39;,
+                                          SeasonType = &#39;Regular+Season&#39;,
+                                          CloseDefDistRange = &#39;6%2B+Feet+-+Wide+Open&#39;
+                                          , TouchTimeRange = &#39;Touch+&lt;+2+Seconds&#39;
+                                          , ShotClockRange = &#39;22-18+Very+Early&#39;   
+                                          , DribbleRange = &#39;0+Dribbles&#39;
+                                          
+)
+
+
+steph &lt;- transitions.shots[transitions.shots$PLAYER_NAME == &#39;Stephen Curry&#39;,
+                           c(&#39;PLAYER_NAME&#39;,&#39;FG3M&#39;,&#39;FG3A&#39;,&#39;FG3_PCT&#39;)] 
+steph
+
+PLAYER_NAME FG3M FG3A FG3_PCT
+6 Stephen Curry   30   56   0.536</code></pre>
+<p>ALL. RIGHT.</p>
+<p>OKEEEEEEEEY.</p>
+<p>THAT WAS UNEXPECTED.</p>
+<p>That is impressive!</p>
+<p>So if you are Kyrie Irving you are sure (!) that there is 60% chance of Stephen Curry making the damn shot, because he just makes damn shots.</p>
+<p>I am going to skip checking exact probability of Kevin Durant finishing an uncontested dunk in transition with no one around him. Lets just say it will be 100% in small sample size and 99% in large sample size for that one moment where the ball will go through the net, bounce of the back of his head and jump out through the rim.</p>
+<p>So, what is you expected loss when you are Kyrie and you run towards Steph Curry instead of stopping KD?</p>
+<pre class="r"><code># event A - KD makes a dunk ( 2 points)
+# event B - KD misses a dunk (0 points, Kyrie rebounds, runs across the court, celebrates )
+# P(A) = probability of event A =  1
+# P(B) = 1-P(A) - probability of event B = 0
+
+Expected.Loss.KD = 1 * 2 + (1-1) * 0
+
+Expected.Loss.KD 
+2</code></pre>
+<p>And what you can expect when you stop KD train and let him pass to wide open Steph Curry?</p>
+<pre class="r"><code># event A - Steph makes a 3 pointer ( 3 points)
+# event B - Steph misses a 3 pointer (0 points)
+# P(A) = probability of event A =  0.6
+# P(B) = 1-P(A) - probability of event B = 0.4
+
+Expected.Loss.SC = 0.6 * 3 + (1-0.4) * 0
+
+Expected.Loss.SC 
+1.8</code></pre>
+<p>Since 2 is always greater loss then 1.8 the conclusion is clear.</p>
+<p>Grannie was right. Stop. the. ball.</p>
+<p>The interpretation behind expected value is that if the same situation happens many times, the average loss will be equal to 2 or 1.8 points, based on what option you choose. If you plan to let rivals run only one transition per game, you probably want more to prevent losing 3 point shot than let some athletic freak break the rim.</p>
+<p>…But if you commit 20 turnovers and you are not able to utilize your obvious advantage on offensive glass, then just stop the ball.</p>
+<p>In theory, 10 transitions ended with Durant dunking all over the place would result in 20 points. 10 transitions ended with Steph Curry wide open would result in 18 points since Curry converts 6 times per 10 attempts.</p>
+<p>Finally, lets just check what efficiency would reverse the conlusion.</p>
+<pre class="r"><code>x &lt;- 0.6
+while(x * 3 + (1-x) * 0 &lt;= 2){
+  x&lt;- x + 0.01
+}
+print(x)
+print(x * 3 + (1-x) * 0)
+0.67</code></pre>
+<p>Stephen Curry would have to make more than 2/3 of his 3 pointers in that particular transition situation to give Kyrie the reason to break the holliest of rules.</p>
+<p>Thank you for reading! If you have any comments you can find me on twitter or just leave comment on this site.</p>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

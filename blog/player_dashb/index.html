@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>NBA Player stats dashboard v1.0 - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>NBA Player stats dashboard v1.0</h1>
+
+
+<p class="timestamp">March 19, 2018</p>
+
+<p>Have you ever had that feeling that you really need another dashboard with NBA player’s data in your life?</p>
+<p>Me neither.</p>
+<p>Well, actually, I had! So I developed one! <a href="https://www.per48.co/shiny/nbar/">You can find it here</a></p>
+<p><a href="https://github.com/PatrickChodowski/NBAr">All data collected using NBAr package - check it out here!</a></p>
+<p>I use it mostly for analysis I do and I found it is actually useful tool to access player’s data easily - I tried to keep as much information in one place as I could so I don’t have to jump around pages and filters like I need on nba.com.</p>
+<p>I called it version 1.0 because I plan to build more stuff on it and make some tweaks in the future so I will show even bigger picture. So far it contains:</p>
+<div id="left-hand-filter-panel" class="section level3">
+<h3>Left hand filter panel:</h3>
+<p>In that panel you can select</p>
+<ul>
+<li>Season (can be multiple, but full data is from 2015)</li>
+<li>Player (by default I set Al Horford, since everybody likes him)</li>
+<li>Date range (updated on season)</li>
+<li>Opponents team in a very nice grid</li>
+<li>Drag and drop Stat selection, which is definately a highlight of this panel (also it is not working on mobile)</li>
+</ul>
+<p>There is also switch for per36/per48/perGame data, for daily numbers it is no use. (planning to put monthly and seasonal numbers in close future).</p>
+</div>
+<div id="players-summary-tab" class="section level3">
+<h3>Players Summary tab:</h3>
+<p>Show daily data and general distribution for statistics specified on the left hand panel. Bar chart has daily values, rolling mean and cumulated mean.</p>
+</div>
+<div id="locationopponent-tab" class="section level3">
+<h3>Location/Opponent tab:</h3>
+<p>Presents boxplots for Home/Away and Opponent splits. Useful to check how players performs in different situations.</p>
+</div>
+<div id="shots" class="section level3">
+<h3>Shots:</h3>
+<p>Classic tab contains players shotcharts for values specified in both left side panel and shots panel. Grid has all shots, points distribution, player’s efficiency and leaguess efficiency.</p>
+<p>Interactive plot is a big shotchart with interactive area (still looking for proper use case though..)</p>
+</div>
+<div id="game-logs" class="section level3">
+<h3>Game logs:</h3>
+<p>That’s just a table with numbers</p>
+</div>
+<div id="top-players" class="section level3">
+<h3>Top players:</h3>
+<p>Leagues top players sorted in given category. It’s very fast ranking tool.</p>
+</div>
+<div id="possible-extensions" class="section level3">
+<h3>Possible extensions:</h3>
+<ul>
+<li>Adding monthly and seasonal data</li>
+<li>Adds players bio with photo and team</li>
+<li>Team tab (that’s huge one)</li>
+<li>Finding a good use for interactive shotchart</li>
+<li>Player comparison option</li>
+<li>Lineups and matchups data</li>
+</ul>
+<p>Dashboard still needs proper tests so if you find it useful or interesting please write to me on Twitter or send me an email. I welcome any feedback on it!</p>
+</div>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>NBAr - scrape NBA data from NBA.com API - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>NBAr - scrape NBA data from NBA.com API</h1>
+
+
+<p class="timestamp">May 5, 2017</p>
+
+<div id="nbar" class="section level2">
+<h2>NBAr</h2>
+<p>There was never a better time to be NBA, R and data analysis fan. Might be not the most useful tool nor the most exciting, but NBAr contains set of wrapper functions for downloading and simple processing of data from <a href="http://stats.nba.com" class="uri">http://stats.nba.com</a> API.</p>
+<p>Over the last year functions contained in NBAr package helped my write my master thesis and also couple of blog posts on this site. Before I finally start writing more frequently I decided to finish the package and upload it on github so everyone can see it, use it, give feedback or contribute. Over the last year I have been slooowly working on functions contained in NBAr package</p>
+<div id="to-install" class="section level3">
+<h3>To install</h3>
+<pre class="r"><code>if (!require(&quot;devtools&quot;))
+  install.packages(&quot;devtools&quot;)
+devtools::install_github(&quot;PatrickChodowski/NBAr&quot;)</code></pre>
+<p><a href="https://github.com/PatrickChodowski/NBAr">You can also check out my depository here</a></p>
+</div>
+<div id="example-script" class="section level3">
+<h3>Example script</h3>
+<p>Script below enables you to get almost every table from Stats.Nba.com. I have been using it for a long time to create my own local data directories:</p>
+<pre class="r"><code>library(NBAr)
+library(tidyverse)
+#devtools::install_github(&quot;PatrickChodowski/NBAr&quot;)
+
+season &lt;- &quot;2017&quot;
+gamelist&lt;- paste(&quot;00&quot;,as.character(c(21700001:21701230)),sep=&quot;&quot;)
+
+#########################
+### Boxscores:
+#########################
+
+ traditional &lt;- map(gamelist, ~getBoxscore(.,Type = &#39;traditional&#39;)) %&gt;%
+  compact() %&gt;%  bind_rows()
+ advanced &lt;- map(gamelist, ~getBoxscore(.,Type = &#39;advanced&#39;)) %&gt;%
+   compact() %&gt;%  bind_rows()
+ playertrack &lt;- map(gamelist, ~getBoxscore(.,Type = &#39;playertrack&#39;)) %&gt;%
+   compact() %&gt;%  bind_rows()
+
+#########################
+### Play by play:
+#########################
+
+ playbyplay &lt;- map(gamelist, ~getPlaybyplay(.)) %&gt;% compact() %&gt;%  bind_rows()
+
+#########################
+### Lineups:
+#########################
+
+ lineups &lt;- getLineups(2017,5,&#39;Base&#39;)
+ bulls_lineups &lt;- getLineups(2017,5,&#39;Base&#39;, TeamID = 1610612741)
+
+#########################
+### On/Off court:
+#########################
+
+ onoff_bulls &lt;- getOnOff(2017,1610612741)
+
+#########################
+### Players list
+#########################
+
+ players &lt;- getPlayerlist(season)
+ playerBio &lt;- getPlayerBio(season)
+
+ playerslist &lt;- unique(players$PLAYER_ID)
+
+#########################
+### Shotcharts
+#########################
+
+ shots &lt;- map(playerslist, ~getShotchart(.,Season = season)) %&gt;%
+   compact() %&gt;%  bind_rows()
+
+#########################
+### Schedule
+#########################
+
+ schedule &lt;- getSchedule(season)
+
+
+#########################
+### Tracking data
+#########################
+
+ MeasureType &lt;- c(&quot;Drives&quot;,&quot;Defense&quot;,&quot;CatchShoot&quot;,&quot;Passing&quot;,
+                  &quot;Possessions&quot;,&quot;PullUpShot&quot;,&quot;Rebounding&quot;,&quot;Efficiency&quot;,
+                  &quot;SpeedDistance&quot;,&quot;ElbowTouch&quot;,&quot;PostTouch&quot;,&quot;PaintTouch&quot;)
+ tracking &lt;- map(MeasureType, ~getTracking(.,Season = season, Type = &#39;Team&#39;)) %&gt;%
+   compact() %&gt;%  bind_cols()
+
+
+#########################
+### Playtype data
+#########################
+
+  Playtype &lt;- c(&quot;Postup&quot;,&quot;Transition&quot;,&quot;Isolation&quot;,&quot;PRBallHandler&quot;,
+                &quot;PRRollman&quot;,&quot;Spotup&quot;,&quot;Handoff&quot;,&quot;Cut&quot;,&quot;OffScreen&quot;,&quot;OffRebound&quot;,&quot;Misc&quot;)
+  plays &lt;- map(Playtype, ~getPlaytype(.,Season = season, Type = &#39;Team&#39;)) %&gt;%
+    compact() %&gt;%  bind_cols()
+
+
+#########################
+### Defense data
+#########################
+
+  DefenseCategory &lt;- c(&quot;Overall&quot;,&quot;3+Pointers&quot;,&quot;2+Pointers&quot;,
+                       &quot;Less+Than+6Ft&quot;,&quot;Less+Than+10Ft&quot;,&quot;Greater+Than+15Ft&quot;)
+  defense &lt;- map(DefenseCategory, ~getDefense(.,Season = season, Type = &#39;Team&#39;)) %&gt;%
+    compact() %&gt;%  bind_cols()
+
+#########################
+### General data
+#########################
+
+  MeasureType &lt;- c(&quot;Base&quot;,&quot;Advanced&quot;,&quot;Misc&quot;,&quot;Scoring&quot;,
+                   &quot;Usage&quot;,&quot;Opponent&quot;,&quot;Defense&quot;, &quot;Four+Factors&quot;)
+  general &lt;- map(MeasureType, ~getGeneral(.,Season = season, Type = &#39;Team&#39;)) %&gt;%
+    compact() %&gt;%
+    bind_cols()
+
+
+#########################
+### Hustle data
+#########################
+
+  hustle &lt;- getHustle(season, Type = Type)
+
+#########################
+### Shooting data
+#########################
+
+  shooting &lt;- getShooting(season, Type, &quot;By+Zone&quot;, &quot;Base&quot;)</code></pre>
+</div>
+</div>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

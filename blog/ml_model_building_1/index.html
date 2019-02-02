@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>NBA Machine Learning #1 - Introduction to modelling - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.35" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning. Geeky stuff. Only Stack is the limit.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/apps/">Shiny Projects</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>NBA Machine Learning #1 - Introduction to modelling</h1>
+
+
+<p class="timestamp">April 22, 2018</p>
+
+<div id="TOC">
+<ul>
+<li><a href="#about-series">About series</a></li>
+<li><a href="#what-is-machine-learning-modelling-about">What is machine learning modelling about?</a></li>
+<li><a href="#define-problem">Define Problem</a></li>
+<li><a href="#data-preparation">Data preparation</a><ul>
+<li><a href="#visual-analysis">Visual analysis</a></li>
+<li><a href="#data-cleaning">Data cleaning</a></li>
+<li><a href="#feature-engineering">Feature engineering</a></li>
+<li><a href="#feature-selection">Feature selection</a></li>
+<li><a href="#class-imbalance">Class imbalance</a></li>
+</ul></li>
+<li><a href="#choose-modelling-techniques">Choose modelling techniques</a><ul>
+<li><a href="#why-one-should-always-start-with-simpler-solutions">Why one should always start with simpler solutions?</a></li>
+<li><a href="#bias---variance-tradeoff">Bias - Variance tradeoff</a></li>
+<li><a href="#bootstrapping">Bootstrapping</a></li>
+</ul></li>
+<li><a href="#model-evaluation">Model evaluation</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+</div>
+
+<div id="about-series" class="section level2">
+<h2>About series</h2>
+<p>So I came up with an idea to write series of articles describing how to apply machine learning algorithms on some examples of NBA data. Got to say that plan is quite ambitious - I want to start with machine learning basics, go through some common data problems, required preprocessing tasks and obviously, algorithms. Starting with Linear Regression and hopefully finishing one day with Neural Networks or any other mysterious blackbox. Articles are going to cover both theory and practice (code) and data will be centered around NBA.</p>
+<p>Most of the tasks will be done with mlr package since I try to master it and I am looking for motivation. Datasets and scripts will be uploaded on my github, so feel free to use them for own practice!</p>
+<hr />
+<ul>
+<li><a href="/blog/ml_model_building_1/">1. Process of building a model</a></li>
+<li><a href="/blog/linear_regr_1/">2. Linear Regression with mlr package</a></li>
+</ul>
+<hr />
+<pre class="r"><code>library(tidyverse)
+library(broom)
+library(mlr)
+library(GGally)
+library(visdat)
+
+nba &lt;- read_csv(&quot;../../data/mlmodels/nba_linear_regression.csv&quot;)
+
+glimpse(nba)</code></pre>
+<pre><code>## Observations: 78,739
+## Variables: 13
+## $ PTS         &lt;int&gt; 23, 30, 22, 41, 20, 8, 33, 33, 28, 9, 15, 24, 21, ...
+## $ FG2A        &lt;int&gt; 10, 17, 12, 14, 8, 7, 24, 12, 13, 11, 12, 13, 13, ...
+## $ FG3A        &lt;int&gt; 3, 3, 3, 6, 1, 2, 1, 4, 0, 2, 1, 0, 0, 2, 1, 3, 1,...
+## $ FTA         &lt;int&gt; 4, 9, 2, 21, 14, 4, 10, 15, 7, 4, 6, 5, 6, 12, 13,...
+## $ AST         &lt;int&gt; 5, 6, 1, 6, 10, 6, 3, 3, 6, 8, 4, 8, 4, 5, 7, 5, 7...
+## $ OREB        &lt;int&gt; 0, 2, 2, 1, 2, 0, 2, 4, 1, 0, 2, 0, 2, 1, 6, 0, 0,...
+## $ PF          &lt;int&gt; 5, 4, 1, 3, 5, 2, 2, 4, 3, 3, 3, 4, 2, 1, 2, 3, 5,...
+## $ TOV         &lt;int&gt; 5, 4, 4, 5, 2, 1, 0, 6, 4, 3, 6, 1, 1, 0, 1, 6, 2,...
+## $ STL         &lt;int&gt; 2, 0, 2, 2, 1, 1, 4, 4, 1, 0, 0, 2, 0, 2, 4, 5, 0,...
+## $ PACE        &lt;dbl&gt; 104.44, 110.01, 94.88, 103.19, 92.42, 93.35, 106.2...
+## $ MINS        &lt;dbl&gt; 35.0, 33.9, 36.1, 41.6, 34.4, 36.7, 39.9, 34.5, 35...
+## $ PLAYER_NAME &lt;chr&gt; &quot;Giannis Antetokounmpo&quot;, &quot;Giannis Antetokounmpo&quot;, ...
+## $ GAME_DATE   &lt;date&gt; 2017-02-03, 2017-02-04, 2017-02-08, 2017-02-10, 2...</code></pre>
+<hr />
+</div>
+<div id="what-is-machine-learning-modelling-about" class="section level2">
+<h2>What is machine learning modelling about?</h2>
+<p>The final result of ML modelling is a function (Phew, just a function, right) or whole bunch of functions providing us a prediction of one variable (called dependent variable), based on the values of other variables (yes, independent ones).</p>
+<p>We basically want to predict what will happen, based on our knowledge we got from the history of observations. We are looking for a trends in a data.</p>
+<p>I tried my best at making a proper introduction about what is machine learning and I think thousands of people covered it in a better way than this above. I will just move on to not embarass myself.</p>
+<hr />
+</div>
+<div id="define-problem" class="section level2">
+<h2>Define Problem</h2>
+<p>First step of modelling is to define a problem we want to solve, and how it can be represented by numerical data. Is your dependent variable continous? Is it categorical? If so, how many categories it has?</p>
+<p>For my example, it will be predicting how many points will a given player score on given day against specified opponent - so it will be regression problem. General classification of methods looks more or less like:</p>
+<ul>
+<li>supervised learning methods</li>
+<li>regression</li>
+<li>classification</li>
+<li>unsupervised learning methods</li>
+<li>other:</li>
+<li>reinforcement learning</li>
+<li>association rules</li>
+</ul>
+<p>Where each one of subcategories consists of lists and lists of different methods and algorithms.</p>
+<hr />
+</div>
+<div id="data-preparation" class="section level2">
+<h2>Data preparation</h2>
+<p>After we collect all desired data, it’s time for data preparation… be patient here, it is actually the longest and not-so-exciting part of a process.</p>
+<p>Consists of (mostly visual) data analysis, data cleaning, data cleaning, data cleaning and then feature engineeing. It’s important to remember that we rarely model on raw data. It almost always needs some work to make it useful.</p>
+<p>I hope to cover all the steps in distinct articles, but just to list a few:</p>
+<p><br></p>
+<div id="visual-analysis" class="section level3">
+<h3>Visual analysis</h3>
+<p><strong>univariate analysis</strong></p>
+<ul>
+<li>Plotting distributions of numerical variables (density and histogram plots)</li>
+<li>Barplots to check frequencies of categories</li>
+</ul>
+<pre class="r"><code> nba %&gt;% ggplot() + geom_density(aes(x = FG2A))  + theme_bw() +
+    theme(
+          axis.text.x=element_text(hjust=1,size = 12, face = &#39;bold&#39;),
+          axis.text.y=element_text(size = 12, face = &#39;bold&#39;),
+          axis.title.y = element_blank()
+          ,panel.grid = element_blank())</code></pre>
+<p><img src="/blog/ml_model_building_1_files/figure-html/univ-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><strong>multivariate analysis</strong></p>
+<ul>
+<li>Scatterplots and correlation plots to find dependencies between numerical variables</li>
+<li>Boxplots of categorical variables and dependent variable in order to find useful dummy variables</li>
+</ul>
+<pre class="r"><code> nba %&gt;%
+  slice(1:1000) %&gt;%
+ggpairs(columns = 2:4) + theme_bw()</code></pre>
+<p><img src="/blog/ml_model_building_1_files/figure-html/multi-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><br></p>
+</div>
+<div id="data-cleaning" class="section level3">
+<h3>Data cleaning</h3>
+<p>Do you have a lot of categorical variables? Do you have dates? Sneaky numerical ID columns? Outlying values caused by error? Useless text variables ? Missing values????</p>
+<p>Those 1 or 2 annoying observations with missing values that you haven’t spotted…</p>
+<p>Most of issues above can be easily spotted during visual analysis, but it’s good to have one more look at the whole dataset:</p>
+<pre class="r"><code>visdat::vis_dat(nba[1:1000,])</code></pre>
+<p><img src="/blog/ml_model_building_1_files/figure-html/dfplot-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Just to name a few data cleaning tasks (you probably won’t need all of them everytime). There will be article only about those tasks and when to use them.</p>
+<ul>
+<li>normalisation</li>
+<li>standarisation</li>
+<li>scalling</li>
+<li>log-scalling</li>
+<li>binning</li>
+<li>dealing with outliers</li>
+<li>imputing empty values</li>
+</ul>
+<p><br></p>
+</div>
+<div id="feature-engineering" class="section level3">
+<h3>Feature engineering</h3>
+<p>Again, this is bread and butter of data science. In the end how you prepare your data is way more important for the overall model score than algorithm that you chose. Winners of every Kaggle competition repeat it regularly that obtaining the right variables was the crucial factor that gave them the advantage.</p>
+<p>Proper feature engineering is close to art. You need to use your domai expertise, instincts, data analysis and tries to find what will work. There is no one proper way here.</p>
+<ul>
+<li>how to transform continuous variables</li>
+<li>what’s the best split for categorical variables to create dummy ones</li>
+<li>shall I use dimensionality reduction techniques</li>
+<li>shall I combine some variables</li>
+</ul>
+<p><br></p>
+</div>
+<div id="feature-selection" class="section level3">
+<h3>Feature selection</h3>
+<p>Once again, you can pick variables yourself, but there is high chsnce you will be better off with some standard approaches like using statistical analysis or feature selection algorithms:</p>
+<ul>
+<li>correlation analysis</li>
+<li>permutation tests</li>
+<li>family of entropy and information gain tests</li>
+<li>elastic net approach for regression models</li>
+<li>gridsearch</li>
+<li>stepwise search</li>
+</ul>
+<p>Just to name a few. All of them have their pros and cons, and it’s definately good to know them. It’s important to mention that there are methods that are capable of dealing with unimportant variables themselves, but I still wouldn’t recommend leaving them in dataset. This would add unnecessary noise to the data and also slow down the learning process, which is not perfect. Always aim for the best!</p>
+<p><br></p>
+</div>
+<div id="class-imbalance" class="section level3">
+<h3>Class imbalance</h3>
+<p>This can be huge if you miss that problem before applying algorithm. If there is large difference (lets say 0.70 to 0.30) between class frequencies in dependent variable, it can lead to false model predictions. As always there are several ways of dealing with it, dependent mostly on number of observations of your training dataset and accordingly number of observations per class.</p>
+<ul>
+<li>If number of observations is huge/sufficient then you can cut the number of observations from major class</li>
+<li>If opposite.. well, then you have to use algorithms to generate new data in order to equalize frequencies. Methods will be covered in further article.</li>
+</ul>
+<p>After we got to know our data, managed to process it and select variables we want to use, it’s finally time for some time!</p>
+<hr />
+</div>
+</div>
+<div id="choose-modelling-techniques" class="section level2">
+<h2>Choose modelling techniques</h2>
+<p>It’s exciting moment when you are finally ready to apply first algorithm. You can choose from trees, forests, boosting techniques, neural networks, regressions techniques, support vector machines and many many more. Number of possibilities is overwhelming. So, where should you start?</p>
+<p><br></p>
+<div id="why-one-should-always-start-with-simpler-solutions" class="section level3">
+<h3>Why one should always start with simpler solutions?</h3>
+<p>Although I know how tempting it is to just grab tons of variables, perform feature selection, throw them into model bowl and get effortless result, it might be better to start your modelling with some simple approach and then build gradually on top of that.</p>
+<p><strong>There are several reasons to do that</strong>:</p>
+<ul>
+<li><p>You understand your data better. By picking variables manually (based on domain knowledge/common sense) you easily get to know which features play most important role in defining independent variable.</p></li>
+<li><p>Model is easier to explain. It’s especially important if you just became data scientist for a company ( :) ) and you need to make other people believe in your theories and analysis. It shows that you know what you are doing. Simple proof of concepts enable non-technical stakeholders to understand the idea behind, understand that it is going in right direction and then they will be eager to wait for more complex solutions.</p></li>
+</ul>
+<p>This argument is more important than you think and way more important than you would like it to be.</p>
+<ul>
+<li>There is a chance that if you pick best features and process them right way, you will receive high quality model with some minimal amount of work. Let’s say we build very simple predictor of <strong>Points</strong>, using <strong>2 points field goal attempts</strong> and <strong>three point field goal attempts</strong>. (Respectively FG2A and FG3A)</li>
+</ul>
+<pre class="r"><code>very_simple &lt;- lm(PTS ~ FG2A  + FG3A, nba)
+
+broom::glance(very_simple)[c(&#39;r.squared&#39;,&#39;adj.r.squared&#39;)]</code></pre>
+<pre><code>##   r.squared adj.r.squared
+## 1 0.7711777     0.7711719</code></pre>
+<p>Model returns R squared of 0.77, which is decent in respect of how much time we spend on building the model (obviously its on training dataset without any validation but still, you get an idea…). It won’t win you a competition on Kaggle, but it will give you solid foundation for further work.</p>
+<pre class="r"><code>data.frame(real_values = nba$PTS, predictions = very_simple$fitted.values, Game_Player = paste(nba$PLAYER_NAME, nba$GAME_DATE)) %&gt;%
+  slice(52400:52550) %&gt;%
+  tidyr::gather(key = &#39;Variable&#39;, value = &#39;Value&#39;, - Game_Player) %&gt;%
+  ggplot() +
+    geom_line(aes(x = Game_Player, y = Value, group = Variable, color = Variable), size = 1) + theme_bw() +
+    theme(
+          axis.text.x=element_text(angle=45,hjust=1,size = 3, face = &#39;bold&#39;),
+          axis.text.y=element_text(size = 12, face = &#39;bold&#39;),
+          axis.title = element_blank()
+          ,legend.position=&#39;top&#39;
+          ,panel.grid = element_blank())</code></pre>
+<p><img src="/blog/ml_model_building_1_files/figure-html/plot_simple-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>It’s far from perfect, but we got something we can build on.</p>
+<p><strong>It has its cons as well</strong>:</p>
+<ul>
+<li><p>Yes, it takes time. Especially with large number of variables to consider and when you think about all possible feature engineering methods you can try out. But in the end this is data science job - searching for a real signal somewhere in the data.</p></li>
+<li><p>It’s totally possible that simple model is not able to cover problem in any way - situation just requires more complex ones (for example necessary variable combinations). Then the simple approach will never give us anything promising. Then well… at least we gain that information.</p></li>
+</ul>
+<p><br></p>
+</div>
+<div id="bias---variance-tradeoff" class="section level3">
+<h3>Bias - Variance tradeoff</h3>
+<p>Remember that, even though you can build decent model with very simple solution, you should not stop in that point. There is high risk of model being <strong>biased</strong>. Bias is caused by model making wrong or too simple assumptions about real dependencies occuring in real world.</p>
+<p>Imagine if we try to apply linear model on a problem that is highly non-linear. Algorithm will try to fit coefficients to data as best as it can, but even though errors will be minimized, predictions on validation datasets won’t be accurate due to wrong assumptions about reality. That happens because model uses wrong function to describe reality.</p>
+<p>What you can do to reduce bias error, is to add more information to the model. Feed it with more observations and more variables so the function will get more complex and will fit better to the data. New learnt function will be definately better reflection of real world.</p>
+<p>Unfortunately the more complex the function the higher the <strong>variance</strong> error becomes. It means that model became so good at fitting training dataset, it is not general enough to predict values for new, never seen before observations. This is called <strong>overfitting</strong>.</p>
+<p>Variance indicates how much the model will change if it trained on new dataset.</p>
+<p><strong>During model building you need to remeber about that problem. Your model will perform the best when you find the optimal point between Bias and Variance. Model cannot be too simple because the vias will be very high, in the same time it can’t be overcomplicated, because it will cause high variance and overfitting.</strong></p>
+<p>High bias is a problem for parametric algorithms like linear and logistic regression, on the other hand nonparametric models like KNN or Decision Trees have low bias because they don’t assume parametric dependencies. However, those models tend to have high variance. Your goal during building supervised learning model is to achieve low bias and low variance.</p>
+<p><br></p>
+</div>
+<div id="bootstrapping" class="section level3">
+<h3>Bootstrapping</h3>
+<p>Bias can be reduced by adding more variables to a model or using nonparametric method. Then we can try to reduce variance by using one of many bootstrap approaches.</p>
+<ul>
+<li>Most common one is using random forest instead of decision trees</li>
+<li>You can also run bagging/ensemble versions of other algorithms</li>
+<li>There are also several versions of Cross-validation that can be used here</li>
+<li>One can stack many different models and then take an average of them to provide final prediction</li>
+</ul>
+<p>There are a lot of possibilities…</p>
+<hr />
+</div>
+</div>
+<div id="model-evaluation" class="section level2">
+<h2>Model evaluation</h2>
+<p>After you come up with final model fitted to your training data, it’s time to provide validation dataset so you can check how your algorithm performs on new examples. There are a lot of different metrics that can be used to evaluate model performance, to list few of them:</p>
+<ul>
+<li>Confusion matrics family with ROC curve, AUC and gini index</li>
+<li>Gain and lift chart</li>
+<li>For regression: MAE and RMSE</li>
+<li>For linear regression R squared</li>
+</ul>
+<p>And several others. Each of them has its pros and cons and it’s important to be aware of them all, to choose proper one for your case. I am going to cover them during further model building.</p>
+<hr />
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>What you just read is just short overview of all steps of model building with a lot of lists and little detail. Hopefully I will stick to the plan and I will deliver article of each step described above in the text, providing more context, details and theory.</p>
+<p><a href="/blog/linear_regr_1/">Next blog post is going to be about simple linear regression model.</a></p>
+<p><br></p>
+</div>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2018 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+
