@@ -142,11 +142,9 @@ Over the last year functions contained in NBAr package helped my write my master
       <guid>/home/</guid>
       <description>Welcome to Per48 ! Blog made for basketball data analysis and showcasing R programming skills on NBA-related examples.
 If you are using R and want to analyse NBA data, you can use my NBAr package in order to connect to NBA.com API. Github
+If you are using Julia and have some time, then just wait for this package to come to live: Github
 Check out my last blogposts:
- Linear regression with mlr package and NBA data
- NBAr 1.1 update
- how to use NBAr package
- detecting outliers during NBA season</description>
+ I started learning Julia and here is how it goes</description>
     </item>
     
     <item>
@@ -228,19 +226,6 @@ There are of course only 30 observations, one for each team, and five variables 
       <description>Welcome to Per48.co!
 It is a place for me to publish NBA related data analysis. Without blog scripts I create would just stay forever on my local directory, so I decided to set up a site and show my work to anyone interested. I hope you will enjoy/be interested enough to give feedback.
 I hope I will be able to publish something interesting or revealing at least once a week. Fingers crossed!</description>
-    </item>
-    
-    <item>
-      <title>Shiny</title>
-      <link>/apps/</link>
-      <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
-      
-      <guid>/apps/</guid>
-      <description>Here will be updated list of all my shiny projects that I put on a shiny server.
-Playoff Matchups Dashboard 1.0 Just before the tip-off!
-You can find it here
-Player Dashboard 1.0 It&amp;rsquo;s online!
-You can find it here</description>
     </item>
     
   </channel>
