@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>NBAr 2.0 is here! - Per 48 minutes</title>
+    <link rel="stylesheet" href="/css/crab.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0">
+		
+    <meta name="generator" content="Hugo 0.60.1" />
+
+	
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116740634-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-116740634-1');
+</script>
+
+    
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+
+        <div id="site-logo">
+          
+            <img src="/./img/shots-logo.jpg">
+          
+        </div>
+
+	<div id="site-title"><a href="/">Per 48 minutes</a></div>
+	<div id="site-slogan">NBA data analysis. Statistics. Machine Learning.</div>
+
+      </div>
+
+            <nav>
+	<ul class="first">
+          
+            <li><a href="/blog/">Blog</a>
+	    
+	    </li>
+	  
+            <li><a href="/about/">About</a>
+	    
+	    </li>
+	  
+	</ul>
+      </nav>
+
+
+      <div id="content">
+
+        <div id="article">
+	  <h1>NBAr 2.0 is here!</h1>
+
+
+<p class="timestamp">December 3, 2019</p>
+
+
+
+
+<p>Christmas came early this year! Woohoo!</p>
+<p>Happy to officially announce NBAr 2.0 update</p>
+<p>(that is available on github for some time now…)</p>
+<p>List of significant changes:</p>
+<ul>
+<li>NBA’s api became really unstable if it’s called without referall, so it the readr::read_lines had to be replaced with httr::GET</li>
+<li>Old code sometimes looked really bad and I felt bad because of it</li>
+<li>To keep it consistent, most of the dependencies is on Tidyverse packages</li>
+<li>functions_and_argument_names_are_finally_in_snake_case !!!</li>
+<li>Followed best practices about package dependencies (no requires!)</li>
+<li>Added verbose argument to every function to print out the url and glimpse the dataset - it’s especially useful if you are downloading many games at once</li>
+<li>Provided proper data types changes to columns and arguments (no more dreary “2017”)</li>
+<li>game_id is now integer and doesn’t require 00 before proper id</li>
+<li>get_hustle is old get_hustle_boxscore (I find boxscores much easier to use)</li>
+<li>playtypes and tracking are now working flawlessly due to referral trick</li>
+</ul>
+<p>Functions:</p>
+<ul>
+<li>get_all_tracking</li>
+<li>get_boxscore</li>
+<li>get_defense</li>
+<li>get_general</li>
+<li>get_hustle</li>
+<li>get_lineups</li>
+<li>get_matchups</li>
+<li>get_news</li>
+<li>get_on_off</li>
+<li>get_playbyplay</li>
+<li>get_playbyplay2</li>
+<li>get_player_movement</li>
+<li>get_playerbio</li>
+<li>get_players</li>
+<li>get_playtype</li>
+<li>get_rotowire_status</li>
+<li>get_schedule</li>
+<li>get_shooting</li>
+<li>get_shooting_dashboard</li>
+<li>get_shotchart</li>
+<li>get_team_boxscore</li>
+<li>get_tracking</li>
+</ul>
+<p>Examples:</p>
+<pre><code>    library(NBAr)
+    library(tidyverse)
+    #devtools::install_github(&quot;PatrickChodowski/NBAr&quot;)
+    
+    season &lt;- 2018
+    gamelist&lt;- c(21800001:21800003)
+    game_id = 21800001
+    
+    #########################
+    ### Boxscores:
+    #########################
+    
+     traditional &lt;- map(gamelist, ~get_boxscore(.,boxscore_type = &#39;traditional&#39;)) %&gt;% 
+            compact() %&gt;%  
+            bind_rows()
+    
+    #########################
+    ### Matchups 
+    #########################
+    
+     matchup &lt;- get_matchups(game_id)
+    
+    #########################
+    ### Play by play:
+    #########################
+    
+     pbp1 &lt;- map(gamelist, ~get_playbyplay(.)) %&gt;% compact() %&gt;%  bind_rows()
+     pbp2 &lt;- map(gamelist, ~get_playbyplay2(.)) %&gt;% compact() %&gt;%  bind_rows()
+    
+    #########################
+    ### Lineups:
+    #########################
+    
+     lineups &lt;- get_lineups(season,5,&#39;Base&#39;)
+     bulls_lineups &lt;- get_lineups(season,5,&#39;Base&#39;, team_id = 1610612741)
+    
+    #########################
+    ### On/Off court:
+    #########################
+    
+     onoff_bulls &lt;- get_on_off(season,1610612741)
+    
+    #########################
+    ### Players list
+    #########################
+    
+     players &lt;- get_players(season)
+     player_bio &lt;- get_playerbio(season)
+    
+    #########################
+    ### Shotcharts
+    #########################
+    
+     shots_abrines &lt;- get_shotchart(203518, season)
+    
+    #########################
+    ### Schedule
+    #########################
+    
+     schedule &lt;- get_schedule(season)
+    
+    
+    #########################
+    ### Tracking data
+    #########################
+    
+      tracking = get_tracking(season, &#39;Team&#39;, measure_type = &#39;Defense&#39;)
+    
+    
+    #########################
+    ### Playtype data
+    #########################
+    
+      playtype &lt;- get_playtype(season, &#39;T&#39;,  &#39;Postup&#39;)
+    
+    
+    #########################
+    ### Defense data
+    #########################
+    
+      defense &lt;- get_defense(season, &#39;Team&#39;, &#39;Overall&#39;)
+    
+    #########################
+    ### General data
+    #########################
+    
+      general &lt;- get_general(season, type = &#39;Team&#39;, &#39;Base&#39;)
+    
+    
+    #########################
+    ### Hustle data
+    #########################
+    
+      hustle &lt;- get_hustle(21800001)
+    
+    #########################
+    ### Shooting data
+    #########################
+    
+      shooting &lt;- get_shooting(season, &#39;Team&#39;, &quot;By+Zone&quot;, &quot;Base&quot;)
+    
+     
+     </code></pre>
+
+
+        </div>
+
+      </div>
+
+      <div id="footer">
+        Copyright 2019 
+      </div>
+
+    </div>
+    
+    <script src="//yihui.name/js/math-code.js"></script>
+<script async
+src="//cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+  </body>
+</html>
+
+

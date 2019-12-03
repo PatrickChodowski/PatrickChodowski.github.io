@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Blogs on Per 48 minutes</title>
@@ -6,10 +6,23 @@
     <description>Recent content in Blogs on Per 48 minutes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 02 Feb 2019 20:30:00 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 03 Dec 2019 21:30:00 +0100</lastBuildDate>
     
 	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>NBAr 2.0 is here!</title>
+      <link>/blog/nbar2-is-here/</link>
+      <pubDate>Tue, 03 Dec 2019 21:30:00 +0100</pubDate>
+      
+      <guid>/blog/nbar2-is-here/</guid>
+      <description>Christmas came early this year! Woohoo!
+Happy to officially announce NBAr 2.0 update
+(that is available on github for some time now…)
+List of significant changes:
+ NBA’s api became really unstable if it’s called without referall, so it the readr::read_lines had to be replaced with httr::GET Old code sometimes looked really bad and I felt bad because of it To keep it consistent, most of the dependencies is on Tidyverse packages functions_and_argument_names_are_finally_in_snake_case !</description>
+    </item>
     
     <item>
       <title>Putting up with Julia #1 - reading JSONs from web API</title>
@@ -161,7 +174,7 @@ Actually It enabled me to reduce number of dimensions from 25 to 2 and therefore
       <pubDate>Thu, 17 Nov 2016 21:20:00 +0100</pubDate>
       
       <guid>/blog/treemap/</guid>
-      <description>Look at this beauty!
+      <description>Look at this beauty!
 Players in treemap
 </description>
     </item>
@@ -200,8 +213,7 @@ There are of course only 30 observations, one for each team, and five variables 
       <pubDate>Fri, 04 Nov 2016 21:20:00 +0100</pubDate>
       
       <guid>/blog/gsi/</guid>
-      <description>Good Shots IndexGood Shots Index is my first approach to describe efficiency of NBA players. I get that its name is a bit lame, but its acronim is GSI which sounds way more geeky, which is good.Good shot is a shot that reasonably thinking NBA player would like to take in any play in any moment. He shoots it frequently and makes them on above league average efficiency.
-(Above quantile range for the shot of this type, to be exact.</description>
+      <description>Good Shots IndexGood Shots Index is my first approach to describe efficiency of NBA players. I get that its name is a bit lame, but its acronim is GSI which sounds way more geeky, which is good.Good shot is a shot that reasonably thinking NBA player would like to take in any play in any moment. He shoots it frequently and makes them on above league average efficiency.</description>
     </item>
     
   </channel>
