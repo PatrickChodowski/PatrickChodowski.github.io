@@ -2,77 +2,90 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Per 48 minutes</title>
-    <link>http://127.0.0.1:6388/</link>
+    <link>/</link>
     <description>Recent content on Per 48 minutes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 03 Dec 2019 21:30:00 +0100</lastBuildDate>
     
-	<atom:link href="http://127.0.0.1:6388/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>NBAr 2.0 is here!</title>
-      <link>http://127.0.0.1:6388/post/nbar-2-0-is-here/</link>
+      <link>/blog/nbar2-is-here/</link>
+      <pubDate>Tue, 03 Dec 2019 21:30:00 +0100</pubDate>
+      
+      <guid>/blog/nbar2-is-here/</guid>
+      <description>Christmas came early this year! Woohoo!
+Happy to officially announce NBAr 2.0 update
+(that is available on github for some time now…)
+List of significant changes:
+ NBA’s api became really unstable if it’s called without referall, so it the readr::read_lines had to be replaced with httr::GET Old code sometimes looked really bad and I felt bad because of it To keep it consistent, most of the dependencies is on Tidyverse packages functions_and_argument_names_are_finally_in_snake_case !</description>
+    </item>
+    
+    <item>
+      <title>NBAr 2.0 is here!</title>
+      <link>/post/nbar-2-0-is-here/</link>
       <pubDate>Tue, 03 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://127.0.0.1:6388/post/nbar-2-0-is-here/</guid>
+      <guid>/post/nbar-2-0-is-here/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Putting up with Julia #1 - reading JSONs from web API</title>
-      <link>http://127.0.0.1:6388/blog/julia-read-json-https-nba/</link>
+      <link>/blog/julia-read-json-https-nba/</link>
       <pubDate>Sat, 02 Feb 2019 20:30:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/julia-read-json-https-nba/</guid>
+      <guid>/blog/julia-read-json-https-nba/</guid>
       <description>IntroductionThis blog post is definately not about love, I can assure you that.
 I have to admit to myself that after being fanatic R user for more than 3 years, it’s time to learn something new and add cool stuff to my little green toolbox. Anytime I needed to do stuff with data outside of databases I was launching rstudio and was ready to go in no time with well known and comfortable tidy libraries, pipelines and Rprojects.</description>
     </item>
     
     <item>
       <title>How to do cumulative unique count with R and dplyr</title>
-      <link>http://127.0.0.1:6388/blog/r-cumulative-unique-count-dplyr/</link>
+      <link>/blog/r-cumulative-unique-count-dplyr/</link>
       <pubDate>Thu, 23 Aug 2018 20:30:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/r-cumulative-unique-count-dplyr/</guid>
+      <guid>/blog/r-cumulative-unique-count-dplyr/</guid>
       <description>Couple of days ago I had to find a way to visualize in R cumulative number of unique customers over period of time. Having data with dates and customer ids ready I felt pretty confident that I will finish the task in seconds and most of the time will be eaten by loading tidyverse package. Damn I could have felt the coffee break LOOMING behind my screen.
 Little did I know back then but apparently there is no function yet to do just that one task.</description>
     </item>
     
     <item>
       <title>NBA Machine Learning #3 - Splines, LOESS and GAMs with mlr package</title>
-      <link>http://127.0.0.1:6388/blog/mlr-splines-loess-gams/</link>
+      <link>/blog/mlr-splines-loess-gams/</link>
       <pubDate>Wed, 30 May 2018 21:30:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/mlr-splines-loess-gams/</guid>
+      <guid>/blog/mlr-splines-loess-gams/</guid>
       <description>About seriesIntroductionSplinesLinear splineQuadratic splineCubic splineExampleLocal Regression (LOESS)Generalized Additive Models (GAMs)Training GAMsAbout seriesSo I came up with an idea to write series of articles describing how to apply machine learning algorithms on some examples of NBA data. Got to say that plan is quite ambitious - I want to start with machine learning basics, go through some common data problems, required preprocessing tasks and obviously, algorithms.</description>
     </item>
     
     <item>
       <title>NBA Machine Learning #2 - Linear Regression with mlr package</title>
-      <link>http://127.0.0.1:6388/blog/mlr-linear-regression/</link>
+      <link>/blog/mlr-linear-regression/</link>
       <pubDate>Tue, 15 May 2018 21:30:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/mlr-linear-regression/</guid>
+      <guid>/blog/mlr-linear-regression/</guid>
       <description>About seriesLinear RegressionMethods of achieving the best fitOrdinary Least Squares - OLSOne predictorMore predictors (matrix-based formula)Stochastic Gradient Descent methodAssumptionsLinear relationshipCorrelationHomoscedasticity of error termsNormal distribution of error termsAutocorrelation of error termsNo MulticollinearityOutliersHigh leverage observationsScaling variablesBuilding a model - example Linear Regression with mlr packageCorrelation based feature selectionFirst basic modelModel with excluded/scaled observationsConclusionAbout seriesSo I came up with an idea to write series of articles describing how to apply machine learning algorithms on some examples of NBA data.</description>
     </item>
     
     <item>
       <title>NBA Machine Learning #1 - Introduction to modelling</title>
-      <link>http://127.0.0.1:6388/blog/mlr-model-building/</link>
+      <link>/blog/mlr-model-building/</link>
       <pubDate>Sun, 22 Apr 2018 21:30:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/mlr-model-building/</guid>
+      <guid>/blog/mlr-model-building/</guid>
       <description>About seriesWhat is machine learning modelling about?Define ProblemData preparationVisual analysisData cleaningFeature engineeringFeature selectionClass imbalanceChoose modelling techniquesWhy one should always start with simpler solutions?Bias - Variance tradeoffBootstrappingModel evaluationConclusionAbout seriesSo I came up with an idea to write series of articles describing how to apply machine learning algorithms on some examples of NBA data.</description>
     </item>
     
     <item>
       <title>Playoff Matchup Dashboard 1.0 is online!</title>
-      <link>http://127.0.0.1:6388/blog/matchups_playoffs/</link>
+      <link>/blog/matchups_playoffs/</link>
       <pubDate>Sat, 14 Apr 2018 21:30:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/matchups_playoffs/</guid>
+      <guid>/blog/matchups_playoffs/</guid>
       <description>I am super happy to announce that my Playoff Matchups Dashboard is online and ready to be used! Best part of that fact? Playoffs haven’t officially started yet…
 (I am writing this in hurry, because Tip-off is in 25 minutes…)
 Anyway, Dashboard gathers information about playtypes distribution, various tracking data, most important matchups, most common lineups from regular season and also all the shotcharts.
@@ -81,10 +94,10 @@ You can check it out here</description>
     
     <item>
       <title>NBAr 1.1 update</title>
-      <link>http://127.0.0.1:6388/blog/nbar11/</link>
+      <link>/blog/nbar11/</link>
       <pubDate>Mon, 09 Apr 2018 21:30:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/nbar11/</guid>
+      <guid>/blog/nbar11/</guid>
       <description>Hola!
 Just wanted to let you all know that I recently updated NBAr with couple of new functions:
 getAllPlaytypesgetAllTrackinggetHustleBoxscoregetMatchupsInteresting story with getAllPlaytypes and getAlltracking - I just recently started to using player tracking and playtypes data and realized they really need wrapping functions to download and combine all at once. Here they are - quite simple, quite good. Both create datasets with +120 columns but I made sure there are no duplicates or some dissapearing players.</description>
@@ -92,10 +105,10 @@ Just wanted to let you all know that I recently updated NBAr with couple of new 
     
     <item>
       <title>NBA Player stats dashboard v1.0</title>
-      <link>http://127.0.0.1:6388/blog/player_dashb/</link>
+      <link>/blog/player_dashb/</link>
       <pubDate>Mon, 19 Mar 2018 21:20:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/player_dashb/</guid>
+      <guid>/blog/player_dashb/</guid>
       <description>Have you ever had that feeling that you really need another dashboard with NBA player’s data in your life?
 Me neither.
 Well, actually, I had! So I developed one! You can find it here
@@ -105,29 +118,29 @@ I use it mostly for analysis I do and I found it is actually useful tool to acce
     
     <item>
       <title>Detecting outlying statlines in NBA</title>
-      <link>http://127.0.0.1:6388/blog/outliers_nba/</link>
+      <link>/blog/outliers_nba/</link>
       <pubDate>Tue, 28 Nov 2017 21:30:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/outliers_nba/</guid>
+      <guid>/blog/outliers_nba/</guid>
       <description>We all know what happens on social media after - insert name of random/unknown/boring/funny/weird/forgotten player - all of sudden makes all 8 of his 3 point attempts, scores thousands of points and wins that very important game in mid-January for his team. You know, the monthly-Jeff-Green-can-be-a-factor-in-the-playoffs game.
 We have seen the Brandon-Jennings-scoring-55-as-a-rookie game. That Kendrick-Perkins-owns-Nuggets-in-the-paint-with-16pts performance (that, for me as a Nuggets fan, was heartbreaking). All those Dwight-Howard-after-years-of-struggle-is-finally-back games. Jonas Valanciunas pump-fake finally fools a defender.</description>
     </item>
     
     <item>
       <title>Cavaliers - Warriors offense-defense analysis</title>
-      <link>http://127.0.0.1:6388/blog/cavsgsw/</link>
+      <link>/blog/cavsgsw/</link>
       <pubDate>Sat, 01 Jul 2017 21:30:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/cavsgsw/</guid>
+      <guid>/blog/cavsgsw/</guid>
       <description>Lets try to predict what will happen in NBA finals. On one side - uber team with perennial all stars, 2 of top3 NBA players, 3 of top10, 4 of top15. Golden State is a monster. They can shoot from anywhere, contested or not, pull up, spot up, you name it. On defense they switch on screens in the blink of an eye, with every member of their death lineup able to guard almost all positions (Curry will not guard frontcourt guys).</description>
     </item>
     
     <item>
       <title>Stop the ball in transition</title>
-      <link>http://127.0.0.1:6388/blog/stoptheball/</link>
+      <link>/blog/stoptheball/</link>
       <pubDate>Sat, 03 Jun 2017 21:30:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/stoptheball/</guid>
+      <guid>/blog/stoptheball/</guid>
       <description>Just seconds before you finished your spectacular dribbling showcase, barely left defender behind your back and tried that wild shot which was perfect, beside the fact that ball bricked the glass and your teammates had no chance to rebound it, since all of them were waiting for a pass on the weakside.
 Shooters have short memory, they say.
 Now you are running back on defense, turning around and seeing 7 feet of Kevin Durant approaching a bit too fast with the ball.</description>
@@ -135,43 +148,43 @@ Now you are running back on defense, turning around and seeing 7 feet of Kevin D
     
     <item>
       <title>NBAr - scrape NBA data from NBA.com API</title>
-      <link>http://127.0.0.1:6388/blog/nbar/</link>
+      <link>/blog/nbar/</link>
       <pubDate>Fri, 05 May 2017 21:30:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/nbar/</guid>
+      <guid>/blog/nbar/</guid>
       <description>NBArThere was never a better time to be NBA, R and data analysis fan. Might be not the most useful tool nor the most exciting, but NBAr contains set of wrapper functions for downloading and simple processing of data from http://stats.nba.com API.
 Over the last year functions contained in NBAr package helped my write my master thesis and also couple of blog posts on this site. Before I finally start writing more frequently I decided to finish the package and upload it on github so everyone can see it, use it, give feedback or contribute.</description>
     </item>
     
     <item>
       <title>Home</title>
-      <link>http://127.0.0.1:6388/home/</link>
+      <link>/home/</link>
       <pubDate>Sun, 05 Feb 2017 07:51:49 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/home/</guid>
+      <guid>/home/</guid>
       <description>Welcome to Per48 ! Blog made for basketball data analysis and showcasing R programming skills on NBA-related examples.
 If you are using R and want to analyse NBA data, you can use my NBAr package in order to connect to NBA.com API. Github
 If you are using Julia and have some time, then just wait for this package to come to live: Github
 Check out my last blogposts:
-  NBAr 2.</description>
+  Object Oriented Programming for Machine Learning</description>
     </item>
     
     <item>
       <title>DBSCAN approach to finding outliers among players</title>
-      <link>http://127.0.0.1:6388/blog/dbscan/</link>
+      <link>/blog/dbscan/</link>
       <pubDate>Fri, 18 Nov 2016 21:30:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/dbscan/</guid>
+      <guid>/blog/dbscan/</guid>
       <description>Although DBSCAN creates clusters on big and noticeably divided datasets I use it here mainly to find outliers among all players. That means it would distinguish all-stars players or those on the other side of NBA rankings. Luckily, it was the first one.
 library(factoextra)library(fpc)library(readr)library(dplyr)library(tidyr)library(tibble)players &amp;lt;- read_rds(&amp;quot;../../data/dbscan/players.RDS&amp;quot;) %&amp;gt;%remove_rownames() %&amp;gt;% column_to_rownames(var = &amp;#39;PLAYER_NAME&amp;#39;)dbs &amp;lt;- fpc::dbscan(players, eps = 4 ,MinPts = 200, scale= TRUE, method = &amp;#39;raw&amp;#39;)fviz_cluster(dbs, players, stand = FALSE, ellipse = FALSE, geom = &amp;quot;text&amp;quot;,labelsize = 5) +theme_bw() + theme(legend.</description>
     </item>
     
     <item>
       <title>TSNE approach to player clustering</title>
-      <link>http://127.0.0.1:6388/blog/tsne/</link>
+      <link>/blog/tsne/</link>
       <pubDate>Fri, 18 Nov 2016 21:20:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/tsne/</guid>
+      <guid>/blog/tsne/</guid>
       <description>TSNE was in fact my first idea for this task, because I wanted to reduce the dimensility of dataset, in which majority of attributes must be somehow correlated with each other. The first time I saw example of TSNE usage was on r-bloggers.com in pokemon visualition post, written by Joshua Kunst.
 So I basically treated NBA players as they were Pokemon…
 Actually It enabled me to reduce number of dimensions from 25 to 2 and therefore visualize all players on one chart.</description>
@@ -179,10 +192,10 @@ Actually It enabled me to reduce number of dimensions from 25 to 2 and therefore
     
     <item>
       <title>Treemap of all players</title>
-      <link>http://127.0.0.1:6388/blog/treemap/</link>
+      <link>/blog/treemap/</link>
       <pubDate>Thu, 17 Nov 2016 21:20:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/treemap/</guid>
+      <guid>/blog/treemap/</guid>
       <description>Look at this beauty!
 Players in treemap
 </description>
@@ -190,50 +203,59 @@ Players in treemap
     
     <item>
       <title>Clustering players by offensive style of play</title>
-      <link>http://127.0.0.1:6388/blog/offense_mclust/</link>
+      <link>/blog/offense_mclust/</link>
       <pubDate>Tue, 15 Nov 2016 21:20:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/offense_mclust/</guid>
+      <guid>/blog/offense_mclust/</guid>
       <description>My main goal of NBA analysis has always been and probably always will be trying to predict how any player would play against any team on any particular day of regular season. I am sure that building such a model would not be succesful without getting to know and then classyfing the players themselves before taking the next step. The main objective of this particular clustering is to find differences in style of play on the offensive end of the floor between NBA players.</description>
     </item>
     
     <item>
       <title>Clustering teams by their defense p2</title>
-      <link>http://127.0.0.1:6388/blog/team_def2/</link>
+      <link>/blog/team_def2/</link>
       <pubDate>Mon, 14 Nov 2016 21:20:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/team_def2/</guid>
+      <guid>/blog/team_def2/</guid>
       <description>This is the second part of my cluster analysis of NBA teams. In this paper I am looking for groups of teams based on their opponents percentages from certain areas on the court. I use slightly different methods than in previous analysis, not only just to try it out, but I found out that every method result in divergent clusters and in this case following algorithm suit me the best.</description>
     </item>
     
     <item>
       <title>Clustering teams by their defense p1</title>
-      <link>http://127.0.0.1:6388/blog/team_def1/</link>
+      <link>/blog/team_def1/</link>
       <pubDate>Mon, 07 Nov 2016 21:20:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/team_def1/</guid>
+      <guid>/blog/team_def1/</guid>
       <description>In the first part I want to simply divide NBA teams by zones from which their opponents are shooting more frequent than from the others. These are not complex clusters that would provide me a little bit of insight if there is any difference between teams. My overall assumption is that better teams would allow less shots from “danger zones” which are Restricted Area and Three Point Line.
 There are of course only 30 observations, one for each team, and five variables describing frequency for each zone (Restrcited Area, Paint, Mid-Range, Long-Range, 3Point Line).</description>
     </item>
     
     <item>
       <title>Good Shots Index</title>
-      <link>http://127.0.0.1:6388/blog/gsi/</link>
+      <link>/blog/gsi/</link>
       <pubDate>Fri, 04 Nov 2016 21:20:00 +0100</pubDate>
       
-      <guid>http://127.0.0.1:6388/blog/gsi/</guid>
+      <guid>/blog/gsi/</guid>
       <description>Good Shots IndexGood Shots Index is my first approach to describe efficiency of NBA players. I get that its name is a bit lame, but its acronim is GSI which sounds way more geeky, which is good.Good shot is a shot that reasonably thinking NBA player would like to take in any play in any moment. He shoots it frequently and makes them on above league average efficiency.</description>
     </item>
     
     <item>
       <title>About</title>
-      <link>http://127.0.0.1:6388/about/</link>
+      <link>/about/</link>
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
       
-      <guid>http://127.0.0.1:6388/about/</guid>
+      <guid>/about/</guid>
       <description>Welcome to Per48.co!
 It is a place for me to publish NBA related data analysis. Without blog scripts I create would just stay forever on my local directory, so I decided to set up a site and show my work to anyone interested. I hope you will enjoy/be interested enough to give feedback.
 I hope I will be able to publish something interesting or revealing at least once a week. Fingers crossed!</description>
+    </item>
+    
+    <item>
+      <title>Object Oriented Programming for Machine Learning with Python</title>
+      <link>/blog/python-object-oriented-machine-learning-oop/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/python-object-oriented-machine-learning-oop/</guid>
+      <description></description>
     </item>
     
   </channel>

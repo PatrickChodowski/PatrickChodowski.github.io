@@ -3,132 +3,141 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://127.0.0.1:6388/post/nbar-2-0-is-here/</loc>
+    <loc>/blog/</loc>
+    <lastmod>2019-12-03T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/nbar2-is-here/</loc>
+    <lastmod>2019-12-03T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2019-12-03T21:30:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/nbar-2-0-is-here/</loc>
     <lastmod>2019-12-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/</loc>
+    <loc>/post/</loc>
     <lastmod>2019-12-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/post/</loc>
-    <lastmod>2019-12-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://127.0.0.1:6388/blog/</loc>
+    <loc>/blog/julia-read-json-https-nba/</loc>
     <lastmod>2019-02-02T20:30:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/julia-read-json-https-nba/</loc>
-    <lastmod>2019-02-02T20:30:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://127.0.0.1:6388/blog/r-cumulative-unique-count-dplyr/</loc>
+    <loc>/blog/r-cumulative-unique-count-dplyr/</loc>
     <lastmod>2018-08-23T20:30:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/mlr-splines-loess-gams/</loc>
+    <loc>/blog/mlr-splines-loess-gams/</loc>
     <lastmod>2018-05-30T21:30:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/mlr-linear-regression/</loc>
+    <loc>/blog/mlr-linear-regression/</loc>
     <lastmod>2018-05-15T21:30:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/mlr-model-building/</loc>
+    <loc>/blog/mlr-model-building/</loc>
     <lastmod>2018-04-22T21:30:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/matchups_playoffs/</loc>
+    <loc>/blog/matchups_playoffs/</loc>
     <lastmod>2018-04-14T21:30:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/nbar11/</loc>
+    <loc>/blog/nbar11/</loc>
     <lastmod>2018-04-09T21:30:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/player_dashb/</loc>
+    <loc>/blog/player_dashb/</loc>
     <lastmod>2018-03-19T21:20:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/outliers_nba/</loc>
+    <loc>/blog/outliers_nba/</loc>
     <lastmod>2017-11-28T21:30:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/cavsgsw/</loc>
+    <loc>/blog/cavsgsw/</loc>
     <lastmod>2017-07-01T21:30:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/stoptheball/</loc>
+    <loc>/blog/stoptheball/</loc>
     <lastmod>2017-06-03T21:30:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/nbar/</loc>
+    <loc>/blog/nbar/</loc>
     <lastmod>2017-05-05T21:30:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/home/</loc>
+    <loc>/home/</loc>
     <lastmod>2017-02-05T07:51:49+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/dbscan/</loc>
+    <loc>/blog/dbscan/</loc>
     <lastmod>2016-11-18T21:30:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/tsne/</loc>
+    <loc>/blog/tsne/</loc>
     <lastmod>2016-11-18T21:20:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/treemap/</loc>
+    <loc>/blog/treemap/</loc>
     <lastmod>2016-11-17T21:20:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/offense_mclust/</loc>
+    <loc>/blog/offense_mclust/</loc>
     <lastmod>2016-11-15T21:20:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/team_def2/</loc>
+    <loc>/blog/team_def2/</loc>
     <lastmod>2016-11-14T21:20:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/team_def1/</loc>
+    <loc>/blog/team_def1/</loc>
     <lastmod>2016-11-07T21:20:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/blog/gsi/</loc>
+    <loc>/blog/gsi/</loc>
     <lastmod>2016-11-04T21:20:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/about/</loc>
+    <loc>/about/</loc>
     <lastmod>2016-05-05T21:48:51-07:00</lastmod>
   </url>
   
   <url>
-    <loc>http://127.0.0.1:6388/tags/</loc>
+    <loc>/blog/python-object-oriented-machine-learning-oop/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
   </url>
   
 </urlset>
