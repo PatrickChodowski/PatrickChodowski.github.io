@@ -65,7 +65,73 @@
 
 
 
+<p>I will remember 2019 as a year in which I fully embraced Python as my go-to machine learning tool. (I am still going for R when I need to do exploratory data analysis, because tidyverse is just easier to use in that case than pandas). Scikit-learn universe with unified API’s, database connections and proper programming toolset is simply too good to not use it for complex machine learning projects.</p>
+<p>After writing and adapting the same functions for couple of different projects I decided to move on and try out object programming in order to keep the code clean and readable. If used well, OOP for machine learning can help you symplify your project. Aim of this blogpost is to provide example machine learning class and show how the workflow could look like.</p>
+<p>I am not a seasoned python developer yet, so I assume there are parts that can be written better way than this, but this example is to show the possibilities.</p>
+<p>How OOP can help?</p>
+<ul>
+<li>Organizes code into smaller parts by using methods, which makes it more readable and easier to maintain</li>
+<li>Most of the functions in ML are still being used once per project, but they require a lot of code, so it’s nicer to keep it as part of a class</li>
+<li>You can import only one class, instead of multiple one time use functions</li>
+</ul>
+<p>Typical machine learning class:</p>
+<pre><code>class MLModel():
 
+    def __init__(self,
+            estimators,
+            parameters,
+            ensemble,
+            verbose,
+            sql_con):
+        
+        self.estimators = estimators
+        self.parameters = parameters
+        self.verbose = verbose
+        self.sql_con = sql_con
+        self.x_train = None
+        self.x_test = None
+        self.y_train = None
+        self.y_test = None
+        self.column_transformer = None
+        
+        
+        KaggleMember.kaggle_member_count+=1 #line7
+        self.kaggle_id=KaggleMember.kaggle_member_count #line8
+        
+        
+    
+    def get_data(self): 
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </code></pre>
+<p>Usage of the class:</p>
+<pre><code>mlmodel = MLModel(
+    njobs=-1,
+    selected_models=&#39;rf,lgbm&#39;,
+    model_grid_list=get_model_params(),
+    search_method=&#39;random&#39;,
+    search_iters=1,
+    search_scorer=&#39;f1&#39;,
+    ensemble_method=&#39;soft_voting&#39;,
+    verbose=3,
+    sql_engine=sql_engine,
+    with_mlflow=1,
+    mlflow_experiment=1)
+
+mlmodel.fit_full()</code></pre>
+<p>Full script:</p>
+<pre><code>import os
+from sqlalchemy import create_engine
+from model_class import MLModel
+sql_con = create_engine(&quot;your connection definition&quot;)</code></pre>
 
 
         </div>
@@ -73,7 +139,7 @@
       </div>
 
       <div id="footer">
-        Copyright 2019 
+        Copyright 2020 
       </div>
 
     </div>
